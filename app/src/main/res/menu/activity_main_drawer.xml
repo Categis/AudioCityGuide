@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/group1" android:background="#FFFFFF" >
+        <item
+            android:id="@+id/nav_editor_choice"
+            android:icon="@drawable/ic_editor_32"
+            android:title="EDITOR'S CHOICE" />
+    </group>
+    <group android:id="@+id/group2">
+        <item
+            android:id="@+id/nav_explore"
+            android:icon="@drawable/ic_explore_32"
+            android:title="EXPLORE" />
+    </group>
+    <group android:id="@+id/group3">
+        <item
+            android:id="@+id/nav_tag"
+            android:icon="@drawable/ic_tag_32"
+            android:title="TAG LOCATION BASED AUDIO" />
+    </group>
+    <group android:id="@+id/group4">
+        <item
+            android:id="@+id/nav_bookmarks"
+            android:icon="@drawable/ic_bookmark_32"
+            android:title="VIEW BOOKMARKS" />
+    </group>
+    <group android:id="@+id/group5">
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_history_32"
+            android:title="HISTORY" />
+    </group>
+    <group android:id="@+id/group6">
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_32"
+            android:title="SETTINGS" />
+    </group>
+
+
+    <group android:id="@+id/group7">
+        <item
+            android:id="@+id/nav_share"
+            android:title="Follow us" />
+
+        <item
+            android:id="@+id/fb_share"
+            android:title=""
+            android:icon="@drawable/ic_facebook_16" />
+        <item
+            android:id="@+id/google_share"
+            android:title=""
+            android:icon="@drawable/ic_google_plus_16" />
+        <item
+            android:id="@+id/instragam_share"
+            android:title=""
+            android:icon="@drawable/ic_instagram_16" />
+    </group>
+
+</menu>
