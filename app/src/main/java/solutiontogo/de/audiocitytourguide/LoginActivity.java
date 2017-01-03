@@ -20,6 +20,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import cz.msebera.android.httpclient.Header;
+import solutiontogo.de.audiocitytourguide.utils.ValidationUtility;
 
 /**
  *
@@ -165,7 +166,7 @@ public class LoginActivity extends Activity {
      * @param view
      */
     public void navigatetoRegisterActivity(View view){
-        Intent loginIntent = new Intent(getApplicationContext(), RegisterActivity.class);
+        Intent loginIntent = new Intent(getApplicationContext(),RegisterActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(loginIntent);
     }

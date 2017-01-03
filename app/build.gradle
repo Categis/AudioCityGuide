@@ -6,7 +6,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "24.0.1"
     defaultConfig {
-        applicationId "solutiontogo.de.myapplication"
+        applicationId "solutiontogo.de.audiocitytourguide"
         minSdkVersion 11
         targetSdkVersion 25
         versionCode 1
@@ -36,6 +36,8 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.android.support:support-annotations:24.2.0'
     compile 'com.loopj.android:android-async-http:1.4.9'
+
+
 
     testCompile 'junit:junit:4.12'
 }

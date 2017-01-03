@@ -4,9 +4,6 @@ package solutiontogo.de.audiocitytourguide;
  * Created by shivaramak on 02/01/2017.
  */
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,6 +18,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import cz.msebera.android.httpclient.Header;
+import solutiontogo.de.audiocitytourguide.utils.ValidationUtility;
 
 /**
  *
