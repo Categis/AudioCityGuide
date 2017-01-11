@@ -64,10 +64,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dip"
-                android:background="@null"
+                android:background="#ff6347"
                 android:onClick="navigatetoRegisterActivity"
                 android:text="Signup"
-                android:textColor="#228b22"
+                android:textColor="#fff"
                 android:textStyle="bold" />
         </LinearLayout>
 
