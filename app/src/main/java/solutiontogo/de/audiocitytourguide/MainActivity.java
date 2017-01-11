@@ -4,36 +4,31 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,39 +47,33 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 
 public class MainActivity extends FragmentActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
 
-    private GoogleMap mMap;
+    private static String TAG = MainActivity.class.getSimpleName();
+
     public static String LOCATION_IMAGE_URL = "location_image_url";
     public static String LOCATION_IMAGE_INFO = "location_image_info";
-    public CustomAdapter adapter;
+
+    private GoogleMap mMap;
     private static final int GOOGLE_API_CLIENT_ID = 0;
-    protected LocationManager locationManager;
-    protected LocationListener locationListener;
-    protected String latitude,longitude;
     private GoogleApiClient mGoogleApiClient;
+    private GooglePlacesAdapter mAdapter;
+
     public Button btnLoginInHeader;
     public Button btClearSearchLocationText;
     public TextView tvLocationDescription;
-    public ListView lvInExplorerActivity;
     public AutoCompleteTextView autocompleteView;
-    public ImageView ivInListItem;
     public ImageView ivLocationImage;
-    public Fragment map;
-    public ImageView ivLocationAudioListItem;
-    public TextView tvLocationAudeioInfo;
 
-    HashMap<String, Object> temp = new HashMap<String, Object>();
-    ArrayList<HashMap<String, Object>> originalValues = new ArrayList<HashMap<String, Object>>();
-    Integer locationsAudioInteger[] = {R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1};
-
-    private static String TAG = MainActivity.class.getSimpleName();
-
-    private GooglePlacesAdapter mAdapter;
+    RecyclerView mRecyclerView;
+    RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView.Adapter rvAdapter;
+    ArrayList<String> locationAudioFiles;
+    ArrayList<Integer> locationAudioThumbs;
 
     HandlerThread mHandlerThread;
     Handler mThreadHandler;
@@ -166,19 +155,19 @@ public class MainActivity extends FragmentActivity
         tvLocationDescription.scrollTo(0, 0);
         tvLocationDescription.setMovementMethod(new ScrollingMovementMethod());
 
-        ivInListItem = (ImageView) findViewById(R.id.ivLocationAudioListItem);
+        locationAudioFiles = new ArrayList<>(Arrays.asList("Hyderabad", "Secuderabad", "Bangalore", "Tirupati", "Delhi"));
+        locationAudioThumbs = new ArrayList<>(Arrays.asList(R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1));
 
-        temp = new HashMap<String, Object>();
-        String locations[] = {"Hyderabad", "Secuderabad", "Bangalore", "Tirupati", "Delhi"};
-        for (String location:locations) {
-            temp.put(LOCATION_IMAGE_URL, R.drawable.image1);
-            temp.put(LOCATION_IMAGE_INFO, location);
-            originalValues.add(temp);
-        }
+        // Calling the RecyclerView
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mRecyclerView.setHasFixedSize(true);
 
-        adapter = new CustomAdapter(this, R.layout.simplerow, originalValues);
-        lvInExplorerActivity = (ListView) findViewById(R.id.ivLocationAudioList);
-        lvInExplorerActivity.setAdapter(adapter);
+        // The number of Columns
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        rvAdapter = new HLVAdapter(MainActivity.this, locationAudioFiles, locationAudioThumbs);
+        mRecyclerView.setAdapter(rvAdapter);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -346,8 +335,7 @@ public class MainActivity extends FragmentActivity
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * This is where we can add markers or lines, add listeners or move the camera.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -399,54 +387,6 @@ public class MainActivity extends FragmentActivity
     public void onConnectionSuspended(int i) {
         mAdapter.setGoogleApiClient(null);
         Log.e("MainActivity", "Google Places API connection suspended.");
-    }
-
-    // define your custom adapter
-    private class CustomAdapter extends ArrayAdapter<HashMap<String, Object>> {
-        LayoutInflater inflater;
-
-        public CustomAdapter(Context context, int textViewResourceId,
-                             ArrayList<HashMap<String, Object>> Strings) {
-            super(context, textViewResourceId, Strings);
-            inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        // class for caching the views in a row
-        private class ViewHolder {
-            TextView tvLocationAudioInfo;
-            ImageView ivInListItem;
-            int[] imageIds = new int[]{R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1};
-        }
-
-        ViewHolder viewHolder;
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.simplerow, null);
-                viewHolder = new ViewHolder();
-                viewHolder.ivInListItem = (ImageView) convertView.findViewById(R.id.ivLocationAudioListItem);
-
-                viewHolder.tvLocationAudioInfo = (TextView) convertView.findViewById(R.id.tvLocationAudeioInfo);
-                viewHolder.tvLocationAudioInfo.scrollTo(0, 0);
-                viewHolder.tvLocationAudioInfo.setMovementMethod(new ScrollingMovementMethod());
-                convertView.setTag(viewHolder);
-
-            } else
-                viewHolder = (ViewHolder) convertView.getTag();
-
-            viewHolder.ivInListItem.setImageResource(viewHolder.imageIds[0]);
-
-            viewHolder.tvLocationAudioInfo.setText(originalValues.get(position).get(LOCATION_IMAGE_INFO).toString());
-            viewHolder.tvLocationAudioInfo.setTypeface(getFontType());
-            viewHolder.tvLocationAudioInfo.scrollTo(0, 0);
-            viewHolder.tvLocationAudioInfo.setMovementMethod(new ScrollingMovementMethod());
-
-            // return the view to be displayed
-            return convertView;
-        }
     }
 
     public Typeface getFontType(){
