@@ -90,8 +90,6 @@ public class MainActivity extends FragmentActivity
     Handler mThreadHandler;
 
     public MainActivity() {
-        // Required empty public constructor
-
         if (mThreadHandler == null) {
             // Initialize and start the HandlerThread
             // which is basically a Thread with a Looper
@@ -103,15 +101,12 @@ public class MainActivity extends FragmentActivity
             mThreadHandler = new Handler(mHandlerThread.getLooper()) {
                 @Override
                 public void handleMessage(final Message msg) {
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             if (msg.what == 1) {
                                 ArrayList<GooglePlacesAdapter.PlaceAutocomplete> results = mAdapter.resultList;
-
                                 if (results != null && results.size() > 0) {
-
                                     mAdapter.notifyDataSetChanged();
                                 }
                                 else {
@@ -120,11 +115,9 @@ public class MainActivity extends FragmentActivity
                             }
                         }
                     });
-
-
-
                 }
             };
+
         }
 
     }
@@ -146,9 +139,8 @@ public class MainActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-// below code is only working when it is pasted here. Please check why? (later)
+        // below code is only working when it is pasted here. Please check why? (later)
         btClearSearchLocationText = (Button) findViewById(R.id.btClearSearchLocationText);
-
         btClearSearchLocationText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -158,16 +150,16 @@ public class MainActivity extends FragmentActivity
                 return false;
             }
         });
+
         ////////////////////////////////////////////////////////////////////////////////////
         mGoogleApiClient = new GoogleApiClient.Builder(MainActivity.this)
                 .addApi(Places.GEO_DATA_API)
                 .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
                 .addConnectionCallbacks(this)
                 .build();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         init();
-
 
         tvLocationDescription.setText("      The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.");
         tvLocationDescription.setTypeface(getFontType());
@@ -211,13 +203,9 @@ public class MainActivity extends FragmentActivity
         mapFragment.getMapAsync(this);
 
         autocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete);
+        autocompleteView.setThreshold(1);
         mAdapter = new GooglePlacesAdapter(getApplicationContext(), R.layout.autocomplete_list_item, null, null);
         autocompleteView.setAdapter(mAdapter);
-
-
-
-
-
 
         autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -225,19 +213,10 @@ public class MainActivity extends FragmentActivity
                 // Get data associated with the specified position
                 // in the list (AdapterView)
                 GooglePlacesAdapter.PlaceAutocomplete placeAutocomplete = (GooglePlacesAdapter.PlaceAutocomplete) parent.getItemAtPosition(position);
-                PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                        .getPlaceById(mGoogleApiClient, placeAutocomplete.placeId.toString());
-
+                PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeAutocomplete.placeId.toString());
                 placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
-
-
-
-                //Toast.makeText(getApplicationContext(), description, Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
 
         autocompleteView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -248,21 +227,20 @@ public class MainActivity extends FragmentActivity
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 final String value = s.toString();
-
                 // Remove all callbacks and messages
                 mThreadHandler.removeCallbacksAndMessages(null);
-
                 // Now add a new one
                 mThreadHandler.postDelayed(new Runnable() {
-
                     @Override
                     public void run() {
-                        // Background thread
-                        mAdapter.resultList = mAdapter.getPredictions(value);
+                        if(null != value && !"".equals(value)) {
+                            // Background thread
+                            mAdapter.resultList = mAdapter.getPredictions(value);
+                        }
                         // Post to Main Thread
                         mThreadHandler.sendEmptyMessage(1);
                     }
-                }, 500);
+                }, 100);
             }
 
             @Override
@@ -284,13 +262,9 @@ public class MainActivity extends FragmentActivity
             // Selecting the first object buffer.
             final Place place = places.get(0);
             LatLng latLng = place.getLatLng();
+            place.getViewport();
             gotoLocation(latLng);
-            /*CharSequence attributions = places.getAttributions();
-
-
-            if (attributions != null) {
-
-            }*/
+            places.release();
         }
     };
 
@@ -303,9 +277,6 @@ public class MainActivity extends FragmentActivity
             super.onBackPressed();
         }
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -328,15 +299,12 @@ public class MainActivity extends FragmentActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -360,13 +328,13 @@ public class MainActivity extends FragmentActivity
 
         } else if (id == R.id.nav_history) {
 
-        }else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_settings) {
 
-        }else if (id == R.id.fb_share) {
+        } else if (id == R.id.fb_share) {
 
-        }else if (id == R.id.google_share) {
+        } else if (id == R.id.google_share) {
 
-        }else if (id == R.id.instragam_share) {
+        } else if (id == R.id.instragam_share) {
 
         }
 
@@ -374,6 +342,7 @@ public class MainActivity extends FragmentActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -386,17 +355,14 @@ public class MainActivity extends FragmentActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-
         LatLng defaultLocation = new LatLng(12.9720810, 77.6472364);
         gotoLocation(defaultLocation);
-
     }
 
     public void gotoLocation(LatLng latLng){
-        mMap.addMarker(new MarkerOptions().position(latLng).title("Categis"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(latLng));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
     }
 
     public void setMenuItemCustomTextStyle(){
@@ -404,7 +370,6 @@ public class MainActivity extends FragmentActivity
     }
 
     private void init(){
-
         //map = (Fragment) findViewById(R.id.map);
         ivLocationImage = (ImageView) findViewById(R.id.ivLocationImage);
         tvLocationDescription =  (TextView) findViewById(R.id.tvLocationDescription);
@@ -436,7 +401,6 @@ public class MainActivity extends FragmentActivity
         Log.e("MainActivity", "Google Places API connection suspended.");
     }
 
-
     // define your custom adapter
     private class CustomAdapter extends ArrayAdapter<HashMap<String, Object>> {
         LayoutInflater inflater;
@@ -450,12 +414,9 @@ public class MainActivity extends FragmentActivity
 
         // class for caching the views in a row
         private class ViewHolder {
-
             TextView tvLocationAudioInfo;
             ImageView ivInListItem;
             int[] imageIds = new int[]{R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1};
-
-
         }
 
         ViewHolder viewHolder;
@@ -471,8 +432,8 @@ public class MainActivity extends FragmentActivity
                 viewHolder.tvLocationAudioInfo = (TextView) convertView.findViewById(R.id.tvLocationAudeioInfo);
                 viewHolder.tvLocationAudioInfo.scrollTo(0, 0);
                 viewHolder.tvLocationAudioInfo.setMovementMethod(new ScrollingMovementMethod());
-
                 convertView.setTag(viewHolder);
+
             } else
                 viewHolder = (ViewHolder) convertView.getTag();
 
@@ -492,7 +453,5 @@ public class MainActivity extends FragmentActivity
         Typeface droidSans = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
         return droidSans;
     }
-
-
 
 }

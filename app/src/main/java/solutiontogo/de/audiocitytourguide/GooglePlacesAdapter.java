@@ -74,7 +74,7 @@ public class GooglePlacesAdapter
                                     mBounds, mPlaceFilter);
             // Wait for predictions, set the timeout.
             AutocompletePredictionBuffer autocompletePredictions = results
-                    .await(10, TimeUnit.SECONDS);
+                    .await(60, TimeUnit.SECONDS);
             final Status status = autocompletePredictions.getStatus();
             if (!status.isSuccess()) {
                 Toast.makeText(getContext(), "Error: " + status.toString(),
