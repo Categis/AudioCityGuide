@@ -22,12 +22,9 @@
         android:layout_weight="0.56"
         android:orientation="horizontal">
 
-        <fragment
-            android:id="@+id/map"
-            class="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="solutiontogo.de.audiocitytourguide.MainActivity" />
+        <include
+            layout="@layout/map_fragment" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -58,7 +55,7 @@
             android:maxLines="6"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginRight="2dp"
             android:layout_gravity="center"
             android:layout_weight="0.6"
             android:id="@+id/tvLocationDescription" />

@@ -17,8 +17,13 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cz.msebera.android.httpclient.Header;
 import solutiontogo.de.audiocitytourguide.utils.ValidationUtility;
+
+import static solutiontogo.de.audiocitytourguide.MainActivity.propertyReader;
 
 /**
  *
@@ -113,12 +118,19 @@ public class RegisterActivity extends Activity {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://192.168.2.2:9999/useraccount/register/doregister",params ,new AsyncHttpResponseHandler() {
+        client.post("http://10.0.2.2:8080/stg_actg_ws/userRegister",params ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
-                String response = new String(responseBody);
-
+                try {
+                    String response = new String(responseBody);
+                    String propValue = propertyReader.properties.getProperty(response);
+                    JSONObject jsonObject = new JSONObject(propValue);
+                    Toast.makeText(getApplicationContext(), jsonObject.getString("register"), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
 

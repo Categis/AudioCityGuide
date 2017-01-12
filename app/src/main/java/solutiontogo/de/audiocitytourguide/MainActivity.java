@@ -52,14 +52,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import solutiontogo.de.audiocitytourguide.utils.PropertyReader;
+
 public class MainActivity extends FragmentActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
 
     private static String TAG = MainActivity.class.getSimpleName();
 
+    public static String LOCATION_AUDIO_URL = "location_audio_url";
     public static String LOCATION_IMAGE_URL = "location_image_url";
-    public static String LOCATION_IMAGE_INFO = "location_image_info";
+
+    public static PropertyReader propertyReader;
 
     private GoogleMap mMap;
     private static final int GOOGLE_API_CLIENT_ID = 0;
@@ -394,6 +398,7 @@ public class MainActivity extends FragmentActivity
 
     public void changeMapLocation(LatLng latLng){
         mMap.clear();
+        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         mMap.addMarker(new MarkerOptions().position(latLng));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
     }
@@ -403,6 +408,8 @@ public class MainActivity extends FragmentActivity
     }
 
     private void init(){
+
+        propertyReader = new PropertyReader(getBaseContext());
         //map = (Fragment) findViewById(R.id.map);
         ivLocationImage = (ImageView) findViewById(R.id.ivLocationImage);
         tvLocationDescription =  (TextView) findViewById(R.id.tvLocationDescription);
