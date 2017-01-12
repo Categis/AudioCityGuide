@@ -38,6 +38,9 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadataResult;
+import com.google.android.gms.location.places.PlacePhotoResult;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -204,6 +207,8 @@ public class MainActivity extends FragmentActivity
                 GooglePlacesAdapter.PlaceAutocomplete placeAutocomplete = (GooglePlacesAdapter.PlaceAutocomplete) parent.getItemAtPosition(position);
                 PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeAutocomplete.placeId.toString());
                 placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+                placePhotosAsync(placeAutocomplete.placeId.toString());
+
             }
         });
 
@@ -251,9 +256,49 @@ public class MainActivity extends FragmentActivity
             // Selecting the first object buffer.
             final Place place = places.get(0);
             LatLng latLng = place.getLatLng();
-            place.getViewport();
-            gotoLocation(latLng);
+            changeMapLocation(latLng);
+            String description = place.getName() + "\n" + place.getAddress();
+            tvLocationDescription.setText(description);
             places.release();
+        }
+    };
+
+    /**
+     * Load a bitmap from the photos API asynchronously
+     * by using buffers and result callbacks.
+     */
+    private void placePhotosAsync(String placeId) {
+        Places.GeoDataApi.getPlacePhotos(mGoogleApiClient, placeId)
+                .setResultCallback(new ResultCallback<PlacePhotoMetadataResult>() {
+
+                    @Override
+                    public void onResult(PlacePhotoMetadataResult photos) {
+                        if (!photos.getStatus().isSuccess()) {
+                            return;
+                        }
+
+                        PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                        if (photoMetadataBuffer.getCount() > 0) {
+                            // Display the first bitmap in an ImageView in the size of the view
+                            photoMetadataBuffer.get(0)
+                                    .getScaledPhoto(mGoogleApiClient, ivLocationImage.getWidth(), ivLocationImage.getHeight())
+                                    .setResultCallback(mDisplayPhotoResultCallback);
+                        } else {
+                            ivLocationImage.setImageResource(R.drawable.image1);
+                        }
+                        photoMetadataBuffer.release();
+                    }
+                });
+    }
+
+    private ResultCallback<PlacePhotoResult> mDisplayPhotoResultCallback
+            = new ResultCallback<PlacePhotoResult>() {
+        @Override
+        public void onResult(PlacePhotoResult placePhotoResult) {
+            if (!placePhotoResult.getStatus().isSuccess()) {
+                return;
+            }
+            ivLocationImage.setImageBitmap(placePhotoResult.getBitmap());
         }
     };
 
@@ -344,10 +389,10 @@ public class MainActivity extends FragmentActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng defaultLocation = new LatLng(12.9720810, 77.6472364);
-        gotoLocation(defaultLocation);
+        changeMapLocation(defaultLocation);
     }
 
-    public void gotoLocation(LatLng latLng){
+    public void changeMapLocation(LatLng latLng){
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(latLng));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));

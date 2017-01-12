@@ -23,13 +23,24 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/name" />
-        <!-- Name TextField -->
+            android:text="@string/first_name" />
+        <!-- First Name TextField -->
 
         <EditText
-            android:id="@+id/registerName"
+            android:id="@+id/registerFirstName"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:hint="Enter your Name"/>
+            android:layout_height="wrap_content" android:hint="Your First Name"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/first_name" />
+        <!-- Last Name TextField -->
+
+        <EditText
+            android:id="@+id/registerLastName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:hint="Your Last Name"/>
 
         <!-- Email Label -->
 
@@ -43,7 +54,22 @@
             android:id="@+id/registerEmail"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your Email ID"
+            android:hint="Your Email ID"
+            android:inputType="textEmailAddress" />
+
+        <!-- Phone Label -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/phone" />
+        <!-- Email TextField -->
+
+        <EditText
+            android:id="@+id/registerPhone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Your Phone Number"
             android:inputType="textEmailAddress" />
 
         <!-- Password Label -->
@@ -59,7 +85,21 @@
             android:id="@+id/registerPassword"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Password"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
+            android:text="@string/confirmPwd" />
+        <!-- Password TextField -->
+
+        <EditText
+            android:id="@+id/registerConfirmPassword"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirm Password"
             android:inputType="textPassword" />
 
         <!-- Error message -->

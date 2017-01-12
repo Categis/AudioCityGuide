@@ -29,29 +29,37 @@ public class RegisterActivity extends Activity {
     ProgressDialog prgDialog;
     // Error Msg TextView Object
     TextView errorMsg;
-    // Name Edit View Object
-    EditText nameET;
+    // First Name Edit View Object
+    EditText etFirstName;
+    // Last Name Edit View Object
+    EditText etLastName;
     // Email Edit View Object
-    EditText emailET;
-    // Passwprd Edit View Object
-    EditText pwdET;
+    EditText etEmail;
+    // Phone Edit View Object
+    EditText etPhone;
+    // Password Edit View Object
+    EditText etPassword;
+    // Confirm Password Edit View Object
+    EditText etConfirmPwd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
         // Find Error Msg Text View control by ID
         errorMsg = (TextView)findViewById(R.id.register_error);
-        // Find Name Edit View control by ID
-        nameET = (EditText)findViewById(R.id.registerName);
-        // Find Email Edit View control by ID
-        emailET = (EditText)findViewById(R.id.registerEmail);
-        // Find Password Edit View control by ID
-        pwdET = (EditText)findViewById(R.id.registerPassword);
-        // Instantiate Progress Dialog object
+
+        etFirstName = (EditText)findViewById(R.id.registerFirstName);
+        etLastName = (EditText)findViewById(R.id.registerLastName);
+
+        etEmail = (EditText)findViewById(R.id.registerEmail);
+        etPhone = (EditText)findViewById(R.id.registerPhone);
+
+        etPassword = (EditText)findViewById(R.id.registerPassword);
+        etConfirmPwd = (EditText)findViewById(R.id.registerConfirmPassword);
+
         prgDialog = new ProgressDialog(this);
-        // Set Progress Dialog Text
         prgDialog.setMessage("Please wait...");
-        // Set Cancelable as False
         prgDialog.setCancelable(false);
     }
 
@@ -61,34 +69,35 @@ public class RegisterActivity extends Activity {
      * @param view
      */
     public void registerUser(View view){
-        // Get NAme ET control value
-        String name = nameET.getText().toString();
-        // Get Email ET control value
-        String email = emailET.getText().toString();
-        // Get Password ET control value
-        String password = pwdET.getText().toString();
-        // Instantiate Http Request Param Object
+
+        String firstName = etFirstName.getText().toString();
+        String lastName = etLastName.getText().toString();
+
+        String email = etEmail.getText().toString();
+        String phone = etPhone.getText().toString();
+
+        String password = etPassword.getText().toString();
+        String confirmPwd = etConfirmPwd.getText().toString();
+
         RequestParams params = new RequestParams();
-        // When Name Edit View, Email Edit View and Password Edit View have values other than Null
-        if(ValidationUtility.isNotNull(name) && ValidationUtility.isNotNull(email) && ValidationUtility.isNotNull(password)){
-            // When Email entered is Valid
-            if(ValidationUtility.validate(email)){
-                // Put Http parameter name with value of Name Edit View control
-                params.put("name", name);
-                // Put Http parameter username with value of Email Edit View control
-                params.put("username", email);
-                // Put Http parameter password with value of Password Edit View control
+
+        if(ValidationUtility.isNotNull(firstName) && ValidationUtility.isNotNull(lastName) && ValidationUtility.isNotNull(email)
+                && ValidationUtility.isNotNull(phone) &&ValidationUtility.isNotNull(password) && ValidationUtility.isNotNull(confirmPwd)){
+            // When Email is valid and Password matches
+            if(ValidationUtility.validate(email) && password.equals(confirmPwd)) {
+                params.put("firstName", firstName);
+                params.put("lastName", lastName);
+                params.put("displayName", (firstName + " " + lastName));
+                params.put("phoneNumber", phone);
+                params.put("email", email);
                 params.put("password", password);
-                // Invoke RESTful Web Service with Http parameters
                 invokeWS(params);
-            }
-            // When Email is invalid
-            else{
+            } else if(!password.equals(confirmPwd)) {
+                Toast.makeText(getApplicationContext(), "Password not matching", Toast.LENGTH_LONG).show();
+            } else {
                 Toast.makeText(getApplicationContext(), "Please enter valid email", Toast.LENGTH_LONG).show();
             }
-        }
-        // When any of the Edit View control left blank
-        else{
+        } else {
             Toast.makeText(getApplicationContext(), "Please fill the form, don't leave any field blank", Toast.LENGTH_LONG).show();
         }
 
@@ -149,9 +158,9 @@ public class RegisterActivity extends Activity {
      * Set degault values for Edit View controls
      */
     public void setDefaultValues(){
-        nameET.setText("");
-        emailET.setText("");
-        pwdET.setText("");
+        etFirstName.setText("");
+        etEmail.setText("");
+        etPassword.setText("");
     }
 
 }

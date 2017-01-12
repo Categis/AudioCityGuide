@@ -22,7 +22,7 @@
 
             <TextView
                 android:id="@+id/tvLocationAudeioInfo"
-                android:layout_width="125dp"
+                android:layout_width="100dp"
                 android:layout_height="30dp"
                 android:textColor="#000000"
                 android:text="TextView"
@@ -30,7 +30,7 @@
 
             <ImageView
                 android:id="@+id/ivLocationAudioListItem"
-                android:layout_width="125dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:weightSum="1.5"
                 android:scaleType="fitStart"

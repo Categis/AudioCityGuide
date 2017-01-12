@@ -13,9 +13,12 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="register_title">Register</string>
     <string name="login_title">Login</string>
-    <string name="name">Name</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
     <string name="email">Email</string>
+    <string name="phone">Phone Number</string>
     <string name="pwd">Password</string>
+    <string name="confirmPwd">Confirm Password</string>
     <string name="btnRegister">Register</string>
 
 </resources>
