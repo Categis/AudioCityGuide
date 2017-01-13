@@ -5,51 +5,60 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    android:weightSum="">
+    android:weightSum="40">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dip"
         android:orientation="horizontal"
+        android:layout_weight="12"
         android:weightSum="3">
-    <Button
-        android:id="@+id/btTagLocation"
-        android:text="Tag Location"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:drawableLeft="@android:drawable/ic_dialog_map"/>
 
-    <Button
-        android:text="Upload Picture"
-        android:id="@+id/btUploadPicture"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:drawableLeft="@android:drawable/ic_menu_camera"/>
+        <Button
+            android:id="@+id/btTagLocation"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@android:drawable/ic_dialog_map"
+            android:text="Tag Location" />
 
-    <Button
-        android:text="Upload Audio"
-        android:id="@+id/btRecordAudio"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:drawableLeft="@android:drawable/ic_btn_speak_now"/>
+        <Button
+            android:id="@+id/btUploadPicture"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@android:drawable/ic_menu_camera"
+            android:text="Upload Picture" />
+
+        <Button
+            android:id="@+id/btRecordAudio"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@android:drawable/ic_btn_speak_now"
+            android:text="Upload Audio" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="20"
+        android:weightSum="2">
 
         <ImageView
             android:id="@+id/ivTLImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dip"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/image1" />
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tvTLName"
                 android:layout_width="match_parent"
@@ -63,10 +72,12 @@
 
     </LinearLayout>
 
-   <Button
-       android:id="@+id/btTLSubmit"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent" />
+    <Button
+        android:id="@+id/btTLSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="SUBMIT" />
 
 </LinearLayout>
 

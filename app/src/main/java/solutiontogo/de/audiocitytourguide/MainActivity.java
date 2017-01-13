@@ -263,14 +263,14 @@ public class MainActivity extends FragmentActivity
                 imageDescriptionDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
                 imageDescriptionDialog.setContentView(getLayoutInflater().inflate(R.layout.full_location_details, null));
 
-                System.out.println("ivPopupImage is null:: "+(ivPopupImage==null));
                 ivPopupImage = (ImageView) imageDescriptionDialog.findViewById(R.id.ivPopupImage);
-                tvPopupText = (TextView) imageDescriptionDialog.findViewById(R.id.tvPopupText);
                 ivPopupImage.setImageBitmap(bitmap);
+
+                tvPopupText = (TextView) imageDescriptionDialog.findViewById(R.id.tvPopupText);
                 tvPopupText.setText(description);
 
                 imageDescriptionDialog.show();
-                //ivPopupImage.setImageBitmap(bitmap);
+
                 return false;
             }
         });
