@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,7 +65,7 @@ public class MainActivity extends FragmentActivity
 
     public static String LOCATION_AUDIO_URL = "location_audio_url";
     public static String LOCATION_IMAGE_URL = "location_image_url";
-
+    public Bitmap bitmap;
     public static PropertyReader propertyReader;
 
     private GoogleMap mMap;
@@ -77,12 +78,18 @@ public class MainActivity extends FragmentActivity
     public TextView tvLocationDescription;
     public AutoCompleteTextView autocompleteView;
     public ImageView ivLocationImage;
+    public ImageView ivPopupImage;
+    public TextView tvPopupText;
+
+    static String description = null;
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter rvAdapter;
     ArrayList<String> locationAudioFiles;
     ArrayList<Integer> locationAudioThumbs;
+
+    Dialog imageDescriptionDialog = null;
 
     HandlerThread mHandlerThread;
     Handler mThreadHandler;
@@ -252,10 +259,18 @@ public class MainActivity extends FragmentActivity
         ivLocationImage.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Dialog imageDescriptionDialog = new Dialog(MainActivity.this);
+                imageDescriptionDialog = new Dialog(MainActivity.this, R.style.PopupTheme);
                 imageDescriptionDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
                 imageDescriptionDialog.setContentView(getLayoutInflater().inflate(R.layout.full_location_details, null));
+
+                System.out.println("ivPopupImage is null:: "+(ivPopupImage==null));
+                ivPopupImage = (ImageView) imageDescriptionDialog.findViewById(R.id.ivPopupImage);
+                tvPopupText = (TextView) imageDescriptionDialog.findViewById(R.id.tvPopupText);
+                ivPopupImage.setImageBitmap(bitmap);
+                tvPopupText.setText(description);
+
                 imageDescriptionDialog.show();
+                //ivPopupImage.setImageBitmap(bitmap);
                 return false;
             }
         });
@@ -274,7 +289,7 @@ public class MainActivity extends FragmentActivity
             final Place place = places.get(0);
             LatLng latLng = place.getLatLng();
             changeMapLocation(latLng);
-            String description = place.getName() + "\n" + place.getAddress();
+            description = place.getName() + "\n" + place.getAddress();
             tvLocationDescription.setText(description);
             places.release();
         }
@@ -315,6 +330,7 @@ public class MainActivity extends FragmentActivity
             if (!placePhotoResult.getStatus().isSuccess()) {
                 return;
             }
+            bitmap = placePhotoResult.getBitmap();
             ivLocationImage.setImageBitmap(placePhotoResult.getBitmap());
         }
     };
@@ -457,6 +473,12 @@ public class MainActivity extends FragmentActivity
     public Typeface getFontType(){
         Typeface droidSans = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
         return droidSans;
+    }
+
+    public void closeDialog(View view) {
+        if (view.getId() == R.id.ib_close) {
+            imageDescriptionDialog.hide();
+        }
     }
 
 }

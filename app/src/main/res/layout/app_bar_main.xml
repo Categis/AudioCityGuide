@@ -27,10 +27,10 @@
 
         <Button
             android:id= "@+id/btClearSearchLocationText"
-            android:text="X"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
+            android:background="@android:drawable/ic_menu_close_clear_cancel"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_gravity="end" />
 
         </android.support.v7.widget.Toolbar>
 

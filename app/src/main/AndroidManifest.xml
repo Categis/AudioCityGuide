@@ -40,7 +40,7 @@
 
         <activity
             android:name=".CameraDemoActivity"
-            android:label="Camera"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="solutiontogo.de.audiocitytourguide.CameraDemoActivity" />
@@ -51,7 +51,7 @@
 
         <activity
             android:name=".LoginActivity"
-            android:label="Camera"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="solutiontogo.de.audiocitytourguide.LoginActivity" />
@@ -59,6 +59,21 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".FullLocationDetails"
+            android:theme="@style/AppTheme.CustomTheme">
+        </activity>
+
+       <!-- <activity
+            android:name=".FullLocationDetails"
+            android:label="FullLocationDetails"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="solutiontogo.de.audiocitytourguide.FullLocationDetails" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>-->
 
         <activity
             android:name=".RegisterActivity"
