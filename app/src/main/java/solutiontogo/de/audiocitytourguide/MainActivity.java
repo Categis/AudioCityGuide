@@ -238,7 +238,7 @@ public class MainActivity extends FragmentActivity
                         // Post to Main Thread
                         mThreadHandler.sendEmptyMessage(1);
                     }
-                }, 100);
+                }, 500);
             }
 
             @Override
