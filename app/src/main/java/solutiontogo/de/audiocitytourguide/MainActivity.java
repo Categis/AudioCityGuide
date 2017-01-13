@@ -1,5 +1,6 @@
 package solutiontogo.de.audiocitytourguide;
 
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -244,6 +246,17 @@ public class MainActivity extends FragmentActivity
             @Override
             public void afterTextChanged(Editable s) {
                 Log.d(TAG, "doAfterTextChanged");
+            }
+        });
+
+        ivLocationImage.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Dialog imageDescriptionDialog = new Dialog(MainActivity.this);
+                imageDescriptionDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+                imageDescriptionDialog.setContentView(getLayoutInflater().inflate(R.layout.full_location_details, null));
+                imageDescriptionDialog.show();
+                return false;
             }
         });
     }
