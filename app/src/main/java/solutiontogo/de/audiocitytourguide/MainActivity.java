@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -388,6 +389,12 @@ public class MainActivity extends FragmentActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_tag) {
+            View view = findViewById(R.id.infoView);
+            ViewGroup parent = (ViewGroup) view.getParent();
+            int index = parent.indexOfChild(view);
+            parent.removeView(view);
+            view = getLayoutInflater().inflate(R.layout.tag_location, parent, false);
+            parent.addView(view, index);
 
         } else if (id == R.id.nav_bookmarks) {
 
