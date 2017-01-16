@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -40,6 +41,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
@@ -159,9 +161,10 @@ public class MainActivity extends FragmentActivity
 
         ////////////////////////////////////////////////////////////////////////////////////
         mGoogleApiClient = new GoogleApiClient.Builder(MainActivity.this)
-                .addApi(Places.GEO_DATA_API)
                 .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
                 .addConnectionCallbacks(this)
+                .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
                 .build();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -382,19 +385,22 @@ public class MainActivity extends FragmentActivity
         System.out.println(id);
 
         if (id == R.id.nav_editor_choice) {
-
-        } else if (id == R.id.nav_explore) {
             // Handle the camera action
             Intent intent = new Intent("solutiontogo.de.audiocitytourguide.CameraDemoActivity");
             startActivity(intent);
-
+        } else if (id == R.id.nav_explore) {
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_tag) {
-            View view = findViewById(R.id.infoView);
+            /*View view = findViewById(R.id.infoView);
             ViewGroup parent = (ViewGroup) view.getParent();
             int index = parent.indexOfChild(view);
             parent.removeView(view);
             view = getLayoutInflater().inflate(R.layout.tag_location, parent, false);
-            parent.addView(view, index);
+            parent.addView(view, index);*/
+
+            Intent intent = new Intent("solutiontogo.de.audiocitytourguide.TagLocationActivity");
+            startActivity(intent);
 
         } else if (id == R.id.nav_bookmarks) {
 
@@ -428,13 +434,23 @@ public class MainActivity extends FragmentActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng defaultLocation = new LatLng(12.9720810, 77.6472364);
+        double latitude = 12.9720810;
+        double longitude = 77.6472364;
+
+        @SuppressWarnings("MissingPermission")
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if(location != null){
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+        }
+
+        LatLng defaultLocation = new LatLng(latitude, longitude);
         changeMapLocation(defaultLocation);
     }
 
     public void changeMapLocation(LatLng latLng){
         mMap.clear();
-        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.addMarker(new MarkerOptions().position(latLng));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
     }
