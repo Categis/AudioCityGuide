@@ -4,10 +4,10 @@ package solutiontogo.de.audiocitytourguide;
  * Created by maheshkandhari on 1/17/2017.
  */
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,7 +21,7 @@ import android.widget.LinearLayout;
 
 import solutiontogo.de.audiocitytourguide.utils.PropertyReader;
 
-public class NavigationHeader extends Activity implements NavigationView.OnNavigationItemSelectedListener {
+public class NavigationHeader extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static Boolean isLaunched = Boolean.TRUE;
     public PropertyReader propertyReader;
@@ -44,7 +44,7 @@ public class NavigationHeader extends Activity implements NavigationView.OnNavig
         navigationView.setNavigationItemSelectedListener(this);
 
         View header = navigationView.getHeaderView(0);
-        btnLoginInHeader  = (Button) header.findViewById(R.id.btnLoginInHeader);
+        btnLoginInHeader = (Button) header.findViewById(R.id.btnLoginInHeader);
         btnLoginInHeader.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -61,7 +61,7 @@ public class NavigationHeader extends Activity implements NavigationView.OnNavig
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
-        if(isLaunched){
+        if (isLaunched) {
             isLaunched = Boolean.FALSE;
             openActivity(R.id.nav_explore);
         }
@@ -105,44 +105,44 @@ public class NavigationHeader extends Activity implements NavigationView.OnNavig
         return true;
     }
 
-    public void openActivity(int id){
+    public void openActivity(int id) {
         Intent intent;
-        switch (id){
-            case R.id.nav_editor_choice :
+        switch (id) {
+            case R.id.nav_editor_choice:
                 // Handle the camera action
                 intent = new Intent(this, CameraDemoActivity.class);
                 startActivity(intent);
                 break;
 
-            case R.id.nav_explore :
+            case R.id.nav_explore:
                 intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
 
-            case R.id.nav_tag :
+            case R.id.nav_tag:
                 intent = new Intent(this, TagLocationActivity.class);
                 startActivity(intent);
                 break;
 
-            case R.id.nav_bookmarks :
+            case R.id.nav_bookmarks:
                 break;
 
-            case R.id.nav_share :
+            case R.id.nav_share:
                 break;
 
-            case R.id.nav_history :
+            case R.id.nav_history:
                 break;
 
-            case R.id.nav_settings :
+            case R.id.nav_settings:
                 break;
 
-            case R.id.fb_share :
+            case R.id.fb_share:
                 break;
 
-            case R.id.google_share :
+            case R.id.google_share:
                 break;
 
-            case R.id.instragam_share :
+            case R.id.instragam_share:
                 break;
 
             default:

@@ -8,15 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import solutiontogo.de.audiocitytourguide.utils.PropertyReader;
 
 public class MainActivity extends NavigationHeader {
 
@@ -43,11 +41,16 @@ public class MainActivity extends NavigationHeader {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.content_main, linearLayout);
 
+        View view = findViewById(R.id.mainView);
+        ViewGroup parent = (ViewGroup) view.getParent();
+        int index = parent.indexOfChild(view);
+        parent.indexOfChild(view);
+        parent.removeView(view);
+        view = getLayoutInflater().inflate(R.layout.map_fragment, parent, false);
+        parent.addView(view, index);
+
         ivLocationImage = (ImageView) findViewById(R.id.ivLocationImage);
         tvLocationDescription =  (TextView) findViewById(R.id.tvLocationDescription);
-
-        /*GoogleMapFragment googleMapFragment = new GoogleMapFragment();
-        new GoogleMapFragment(ivLocationImage, tvLocationDescription);*/
 
         tvLocationDescription.setText("      The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.");
         tvLocationDescription.setTypeface(getFontType());

@@ -10,7 +10,7 @@ import android.widget.Button;
  * Created by maheshkandhari on 1/16/2017.
  */
 
-public class TagLocationActivity extends Activity {
+public class TagLocationActivity extends NavigationHeader {
 
     Button btTagLocation;
     Button btUploadPicture;
@@ -19,16 +19,15 @@ public class TagLocationActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tag_location);
-        init();
+        getLayoutInflater().inflate(R.layout.tag_location, linearLayout);
 
+        init();
         btTagLocation.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return false;
             }
         });
-
         btUploadAudio.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -36,7 +35,6 @@ public class TagLocationActivity extends Activity {
                 return false;
             }
         });
-
         btUploadPicture.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

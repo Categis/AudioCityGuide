@@ -47,7 +47,7 @@ import java.util.ArrayList;
  * Created by maheshkandhari on 1/17/2017.
  */
 
-public class GoogleMapFragment extends FragmentActivity implements OnMapReadyCallback,
+public class GoogleMapFragment extends NavigationHeader implements OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     private static String TAG = GoogleMapFragment.class.getSimpleName();
@@ -97,15 +97,12 @@ public class GoogleMapFragment extends FragmentActivity implements OnMapReadyCal
         }
     }
 
-    public GoogleMapFragment(ImageView imageView, TextView textView) {
-        this.imageView = imageView;
-        this.textView = textView;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_fragment);
+
+//        getLayoutInflater().inflate(R.layout.map_fragment, fragment);
 
         // below code is only working when it is pasted here. Please check why? (later)
         btClearSearchLocationText = (ImageButton) findViewById(R.id.btClearSearchLocationText);
@@ -216,7 +213,7 @@ public class GoogleMapFragment extends FragmentActivity implements OnMapReadyCal
                 return;
             }
             bitmap = placePhotoResult.getBitmap();
-
+            imageView.setImageBitmap(bitmap);
         }
     };
 
