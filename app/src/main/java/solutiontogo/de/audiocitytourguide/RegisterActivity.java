@@ -23,13 +23,11 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 import solutiontogo.de.audiocitytourguide.utils.ValidationUtility;
 
-import static solutiontogo.de.audiocitytourguide.MainActivity.propertyReader;
-
 /**
  *
  * Register Activity Class
  */
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends NavigationHeader {
     // Progress Dialog Object
     ProgressDialog prgDialog;
     // Error Msg TextView Object

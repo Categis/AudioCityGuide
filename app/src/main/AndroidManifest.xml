@@ -51,6 +51,7 @@
 
         <activity
             android:name="solutiontogo.de.audiocitytourguide.MainActivity"
+            android:windowSoftInputMode="stateUnchanged|adjustPan"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

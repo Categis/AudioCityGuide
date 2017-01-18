@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,7 +57,7 @@ public class GoogleMapFragment extends FragmentActivity implements OnMapReadyCal
     private GoogleApiClient mGoogleApiClient;
     private GooglePlacesAdapter mAdapter;
 
-    public Button btClearSearchLocationText;
+    public ImageButton btClearSearchLocationText;
     public AutoCompleteTextView autocompleteView;
     public ImageView imageView;
     public TextView textView;
@@ -107,7 +108,7 @@ public class GoogleMapFragment extends FragmentActivity implements OnMapReadyCal
         setContentView(R.layout.map_fragment);
 
         // below code is only working when it is pasted here. Please check why? (later)
-        btClearSearchLocationText = (Button) findViewById(R.id.btClearSearchLocationText);
+        btClearSearchLocationText = (ImageButton) findViewById(R.id.btClearSearchLocationText);
         btClearSearchLocationText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

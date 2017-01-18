@@ -25,7 +25,6 @@ public class MainActivity extends NavigationHeader {
     public static String LOCATION_AUDIO_URL = "location_audio_url";
     public static String LOCATION_IMAGE_URL = "location_image_url";
 
-    public static PropertyReader propertyReader;
     public TextView tvLocationDescription;
     public ImageView ivLocationImage;
     public ImageView ivPopupImage;
@@ -42,16 +41,13 @@ public class MainActivity extends NavigationHeader {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getLayoutInflater().inflate(R.layout.content_main, linearLayout);
 
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.LLContentMain);
-        getLayoutInflater().inflate(R.layout.content_main, linearLayout, false);
-
-        propertyReader = new PropertyReader(getBaseContext());
         ivLocationImage = (ImageView) findViewById(R.id.ivLocationImage);
         tvLocationDescription =  (TextView) findViewById(R.id.tvLocationDescription);
 
-        GoogleMapFragment googleMapFragment = new GoogleMapFragment();
-        new GoogleMapFragment(ivLocationImage, tvLocationDescription);
+        /*GoogleMapFragment googleMapFragment = new GoogleMapFragment();
+        new GoogleMapFragment(ivLocationImage, tvLocationDescription);*/
 
         tvLocationDescription.setText("      The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.");
         tvLocationDescription.setTypeface(getFontType());

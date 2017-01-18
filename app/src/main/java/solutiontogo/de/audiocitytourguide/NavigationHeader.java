@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,16 +19,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import solutiontogo.de.audiocitytourguide.utils.PropertyReader;
+
 public class NavigationHeader extends Activity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static Boolean isLaunched = Boolean.TRUE;
+    public PropertyReader propertyReader;
     public Button btnLoginInHeader;
     public NavigationView navigationView;
+    public LinearLayout linearLayout;
+    public DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        propertyReader = new PropertyReader(getBaseContext());
+
+        linearLayout = (LinearLayout) findViewById(R.id.layout_content);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -46,11 +55,16 @@ public class NavigationHeader extends Activity implements NavigationView.OnNavig
         });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
+
+        if(isLaunched){
+            isLaunched = Boolean.FALSE;
+            openActivity(R.id.nav_explore);
+        }
     }
 
 
@@ -86,21 +100,27 @@ public class NavigationHeader extends Activity implements NavigationView.OnNavig
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        openActivity(item.getItemId());
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    public void openActivity(int id){
         Intent intent;
-        switch (item.getItemId()){
+        switch (id){
             case R.id.nav_editor_choice :
                 // Handle the camera action
-                intent = new Intent("solutiontogo.de.audiocitytourguide.CameraDemoActivity");
+                intent = new Intent(this, CameraDemoActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.nav_explore :
-                intent = new Intent("solutiontogo.de.audiocitytourguide.MainActivity");
+                intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.nav_tag :
-                intent = new Intent("solutiontogo.de.audiocitytourguide.TagLocationActivity");
+                intent = new Intent(this, TagLocationActivity.class);
                 startActivity(intent);
                 break;
 
@@ -128,9 +148,6 @@ public class NavigationHeader extends Activity implements NavigationView.OnNavig
             default:
                 break;
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     @Override
