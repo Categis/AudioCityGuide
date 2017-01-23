@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="solutiontogo.de.audiocitytourguide">
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -21,18 +23,18 @@
         android:protectionLevel="signature" />
 
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="android.support.multidex.MultiDexApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <activity
             android:name="solutiontogo.de.audiocitytourguide.NavigationHeader"
-            android:windowSoftInputMode="stateUnchanged|adjustPan"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateUnchanged|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -51,9 +53,9 @@
 
         <activity
             android:name="solutiontogo.de.audiocitytourguide.MainActivity"
-            android:windowSoftInputMode="stateUnchanged|adjustPan"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateUnchanged|adjustPan">
             <intent-filter>
                 <action android:name="solutiontogo.de.audiocitytourguide.MainActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -72,9 +74,9 @@
 
         <activity
             android:name=".TagLocationActivity"
-            android:windowSoftInputMode="stateUnchanged|adjustPan"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateUnchanged|adjustPan">
             <intent-filter>
                 <action android:name="solutiontogo.de.audiocitytourguide.TagLocationActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -87,6 +89,16 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="solutiontogo.de.audiocitytourguide.LoginActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".RecordAndUploadAudio"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="solutiontogo.de.audiocitytourguide.RecordAndUploadAudio" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -104,18 +116,22 @@
 
         <activity
             android:name=".RegisterActivity"
-            android:label="Sign Up">
+            android:label="Sign Up"></activity>
+
+        <activity android:name="solutiontogo.de.audiocitytourguide.SearchResultsActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
         </activity>
 
-        <activity android:name="solutiontogo.de.audiocitytourguide.SearchResultsActivity" >
+        <service
+            android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true" />
 
-        <intent-filter>
-            <action android:name="android.intent.action.SEARCH" />
-        </intent-filter>
-
-    </activity>
-
-        <meta-data android:name="android.app.searchable"
+        <meta-data
+            android:name="android.app.searchable"
             android:resource="@xml/searchable" />
 
         <meta-data

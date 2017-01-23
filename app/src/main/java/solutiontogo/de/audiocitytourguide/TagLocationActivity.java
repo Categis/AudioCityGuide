@@ -1,6 +1,6 @@
 package solutiontogo.de.audiocitytourguide;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,13 +31,16 @@ public class TagLocationActivity extends NavigationHeader {
         btUploadAudio.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
+                Intent intent = new Intent(getApplicationContext(), RecordAndUploadAudio.class);
+                startActivity(intent);
                 return false;
             }
         });
         btUploadPicture.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                Intent intent = new Intent(getApplicationContext(), CameraDemoActivity.class);
+                startActivity(intent);
                 return false;
             }
         });

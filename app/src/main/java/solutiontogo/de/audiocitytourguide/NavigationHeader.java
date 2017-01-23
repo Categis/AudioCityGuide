@@ -48,7 +48,7 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
         btnLoginInHeader.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Intent login = new Intent();
+                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
                 return false;
             }
@@ -152,9 +152,8 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (null != drawerLayout && drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
