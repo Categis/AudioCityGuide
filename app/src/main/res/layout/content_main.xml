@@ -19,7 +19,7 @@
         android:layout_weight="56"
         android:orientation="vertical">
 
-        <!--<include layout="@layout/map_fragment" />-->
+        <include layout="@layout/map_fragment" />
 
     </LinearLayout>
 

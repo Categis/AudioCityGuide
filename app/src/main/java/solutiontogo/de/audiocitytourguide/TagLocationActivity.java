@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.android.gms.maps.SupportMapFragment;
 
 /**
  * Created by maheshkandhari on 1/16/2017.
@@ -44,12 +48,17 @@ public class TagLocationActivity extends NavigationHeader {
                 return false;
             }
         });
+
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     public void init(){
         btTagLocation = (Button) findViewById(R.id.btTagLocation);
         btUploadAudio = (Button) findViewById(R.id.btUploadAudio);
         btUploadPicture = (Button) findViewById(R.id.btUploadPicture);
+        imageView = (ImageView) findViewById(R.id.ivTLImage);
+        textView =  (TextView) findViewById(R.id.tvTLDescription);
     }
 
 

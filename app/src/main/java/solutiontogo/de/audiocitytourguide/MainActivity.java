@@ -8,10 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.SupportMapFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +24,6 @@ public class MainActivity extends NavigationHeader {
     public static String LOCATION_AUDIO_URL = "location_audio_url";
     public static String LOCATION_IMAGE_URL = "location_image_url";
 
-    public TextView tvLocationDescription;
-    public ImageView ivLocationImage;
     public ImageView ivPopupImage;
     public TextView tvPopupText;
 
@@ -41,21 +40,13 @@ public class MainActivity extends NavigationHeader {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.content_main, linearLayout);
 
-        View view = findViewById(R.id.mainView);
-        ViewGroup parent = (ViewGroup) view.getParent();
-        int index = parent.indexOfChild(view);
-        parent.indexOfChild(view);
-        parent.removeView(view);
-        view = getLayoutInflater().inflate(R.layout.map_fragment, parent, false);
-        parent.addView(view, index);
+        imageView = (ImageView) findViewById(R.id.ivLocationImage);
+        textView =  (TextView) findViewById(R.id.tvLocationDescription);
 
-        ivLocationImage = (ImageView) findViewById(R.id.ivLocationImage);
-        tvLocationDescription =  (TextView) findViewById(R.id.tvLocationDescription);
-
-        tvLocationDescription.setText("      The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.");
-        tvLocationDescription.setTypeface(getFontType());
-        tvLocationDescription.scrollTo(0, 0);
-        tvLocationDescription.setMovementMethod(new ScrollingMovementMethod());
+        textView.setText("      The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.");
+        textView.setTypeface(getFontType());
+        textView.scrollTo(0, 0);
+        textView.setMovementMethod(new ScrollingMovementMethod());
 
         locationAudioFiles = new ArrayList<>(Arrays.asList("Hyderabad", "Secuderabad", "Bangalore", "Tirupati", "Delhi"));
         locationAudioThumbs = new ArrayList<>(Arrays.asList(R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1));
@@ -71,7 +62,7 @@ public class MainActivity extends NavigationHeader {
         rvAdapter = new HLVAdapter(MainActivity.this, locationAudioFiles, locationAudioThumbs);
         mRecyclerView.setAdapter(rvAdapter);
 
-        ivLocationImage.setOnTouchListener(new View.OnTouchListener() {
+        imageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 imageDescriptionDialog = new Dialog(MainActivity.this, R.style.PopupTheme);
@@ -79,16 +70,20 @@ public class MainActivity extends NavigationHeader {
                 imageDescriptionDialog.setContentView(getLayoutInflater().inflate(R.layout.full_location_details, null));
 
                 ivPopupImage = (ImageView) imageDescriptionDialog.findViewById(R.id.ivPopupImage);
-                ivPopupImage.setImageBitmap(GoogleMapFragment.bitmap);
+                ivPopupImage.setImageBitmap(bitmap);
 
                 tvPopupText = (TextView) imageDescriptionDialog.findViewById(R.id.tvPopupText);
-                tvPopupText.setText(GoogleMapFragment.description);
+                tvPopupText.setText(description);
 
                 imageDescriptionDialog.show();
 
                 return false;
             }
         });
+
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
     }
 
     public Typeface getFontType(){
