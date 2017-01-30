@@ -53,7 +53,7 @@ public class AmazonS3Utility {
         if (sCredProvider == null) {
             sCredProvider = new CognitoCachingCredentialsProvider(
                     context.getApplicationContext(),
-                    Constants.COGNITO_POOL_ID,
+                    AmazonS3Constants.COGNITO_POOL_ID,
                     Regions.US_WEST_2);
         }
         return sCredProvider;

@@ -7,7 +7,6 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,10 +16,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,14 +29,15 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferType;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import solutiontogo.de.audiocitytourguide.recording.AudioRecordingHandler;
+import solutiontogo.de.audiocitytourguide.recording.AudioRecordingThread;
+import solutiontogo.de.audiocitytourguide.utils.AmazonS3Constants;
 import solutiontogo.de.audiocitytourguide.utils.AmazonS3Utility;
-import solutiontogo.de.audiocitytourguide.utils.Constants;
 
 /**
  * Created by shivaramak on 17/01/2017.
@@ -72,31 +70,34 @@ public class RecordAndUploadAudio extends ListActivity {
     // Which row in the UI is currently checked (if any)
     private int checkedIndex;
 
-    private MediaRecorder myRecorder;
-    private MediaPlayer myPlayer;
-    private String outputFile = null;
     private Button startBtn;
     private Button stopBtn;
     private Button playBtn;
+    private Button deleteRecordedAudio;
     private Button stopPlayBtn;
-    private TextView text;
     private Button btUploadAudio;
+
+    String outputFile;
+    private MediaPlayer myPlayer;
+    private AudioRecordingThread recordingThread;
+    VisualizerView visualizerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.record_and_upload_audio);
 
-        text = (TextView) findViewById(R.id.text1);
-        // store it to sd card
-        outputFile = Environment.getExternalStorageDirectory().
-                getAbsolutePath() + "/audioRecording.mp3";
+        visualizerView = (VisualizerView) findViewById(R.id.visualizer);
 
-        myRecorder = new MediaRecorder();
-        myRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        myRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        myRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        myRecorder.setOutputFile(outputFile);
+        // recorded file storage path
+        outputFile = getCacheDir() + "/audioRecording.mp3";
+
+        String sdCardState = Environment.getExternalStorageState();
+        if(Environment.MEDIA_MOUNTED.equals(sdCardState) &&
+                !Environment.MEDIA_MOUNTED_READ_ONLY.equals(sdCardState)) {
+            outputFile = Environment.getExternalStorageDirectory().
+                    getAbsolutePath() + "/audioRecording.mp3";
+        }
 
         startBtn = (Button) findViewById(R.id.start_recording);
         startBtn.setOnClickListener(new View.OnClickListener() {
@@ -128,13 +129,23 @@ public class RecordAndUploadAudio extends ListActivity {
             }
         });
 
-        stopPlayBtn = (Button) findViewById(R.id.delete_recording);
+        stopPlayBtn = (Button) findViewById(R.id.stop_playing);
         stopPlayBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
 
+
+                stopPlay(v);
+            }
+        });
+
+        deleteRecordedAudio = (Button) findViewById(R.id.delete_recording);
+
+        deleteRecordedAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 try {
                     File file = new File(outputFile);
                     boolean deleted = file.delete();
@@ -143,7 +154,6 @@ public class RecordAndUploadAudio extends ListActivity {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "File Not Deleted", Toast.LENGTH_SHORT).show();
                 }
-                //stopPlay(v);
             }
         });
 
@@ -166,12 +176,18 @@ public class RecordAndUploadAudio extends ListActivity {
                 } else {
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                 }
-                intent.setType("audio/*");
+                intent.setType("audio");
                 startActivityForResult(intent, 0);
+
+/*                // Create intent to Open Image applications like Gallery, Google Photos
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                // Start the Intent
+                startActivityForResult(galleryIntent, 1);*/
+
                 return false;
             }
         });
-
 
     }
 
@@ -269,57 +285,54 @@ public class RecordAndUploadAudio extends ListActivity {
     }
 
     public void start(View view) {
-        try {
-            myRecorder.prepare();
-            myRecorder.start();
-        } catch (IllegalStateException e) {
-            // start:it is called before prepare()
-            // prepare: it is called after start() or before setOutputFormat()
-            e.printStackTrace();
-        } catch (IOException e) {
-            // prepare() fails
-            e.printStackTrace();
-        }
-
-        text.setText("Recording Point: Recording");
         startBtn.setEnabled(false);
         stopBtn.setEnabled(true);
+        playBtn.setEnabled(false);
+        stopPlayBtn.setEnabled(false);
+        deleteRecordedAudio.setEnabled(false);
 
-        Toast.makeText(getApplicationContext(), "Start recording...",
-                Toast.LENGTH_SHORT).show();
+        recordingThread = new AudioRecordingThread(outputFile, new AudioRecordingHandler() {
+            @Override
+            public void updateVisualizerView(final float amplitude) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        visualizerView.updateVisualizer(amplitude);
+                    }
+                });
+            }
+        });
+        recordingThread.start();
+
+        Toast.makeText(getApplicationContext(), "Start recording...", Toast.LENGTH_SHORT).show();
     }
 
     public void stop(View view) {
-        try {
-            myRecorder.stop();
-            myRecorder.release();
-            myRecorder = null;
+        startBtn.setEnabled(true);
+        stopBtn.setEnabled(false);
+        playBtn.setEnabled(true);
+        stopPlayBtn.setEnabled(true);
+        deleteRecordedAudio.setEnabled(true);
 
-            stopBtn.setEnabled(false);
-            playBtn.setEnabled(true);
-            text.setText("Recording Point: Stop recording");
-
-            Toast.makeText(getApplicationContext(), "Stop recording...",
-                    Toast.LENGTH_SHORT).show();
-        } catch (IllegalStateException e) {
-            //  it is called before start()
-            e.printStackTrace();
-        } catch (RuntimeException e) {
-            // no valid audio/video data has been received
-            e.printStackTrace();
+        if (recordingThread != null) {
+            recordingThread.stopRecording();
+            recordingThread = null;
         }
+
+        Toast.makeText(getApplicationContext(), "Stop recording...", Toast.LENGTH_SHORT).show();
     }
 
     public void play(View view) {
         try {
-            myPlayer = new MediaPlayer();
+            if (myPlayer == null)
+                myPlayer = new MediaPlayer();
             myPlayer.setDataSource(outputFile);
             myPlayer.prepare();
             myPlayer.start();
 
             playBtn.setEnabled(false);
             stopPlayBtn.setEnabled(true);
-            text.setText("Recording Point: Playing");
+            deleteRecordedAudio.setEnabled(true);
+            startBtn.setEnabled(true);
 
             Toast.makeText(getApplicationContext(), "Start play the recording...",
                     Toast.LENGTH_SHORT).show();
@@ -336,8 +349,9 @@ public class RecordAndUploadAudio extends ListActivity {
                 myPlayer.release();
                 myPlayer = null;
                 playBtn.setEnabled(true);
+                startBtn.setEnabled(true);
                 stopPlayBtn.setEnabled(false);
-                text.setText("Recording Point: Stop playing");
+
 
                 Toast.makeText(getApplicationContext(), "Stop playing the recording...",
                         Toast.LENGTH_SHORT).show();
@@ -370,7 +384,6 @@ public class RecordAndUploadAudio extends ListActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
-
             try {
                 String path = getPath(uri);
                 beginUpload(path);
@@ -393,7 +406,7 @@ public class RecordAndUploadAudio extends ListActivity {
             return;
         }
         File file = new File(filePath);
-        TransferObserver observer = transferUtility.upload(Constants.BUCKET_NAME, file.getName(),
+        TransferObserver observer = transferUtility.upload(AmazonS3Constants.BUCKET_NAME, file.getName(),
                 file);
         /*
          * Note that usually we set the transfer listener after initializing the
@@ -511,6 +524,4 @@ public class RecordAndUploadAudio extends ListActivity {
             updateList();
         }
     }
-
-
 }

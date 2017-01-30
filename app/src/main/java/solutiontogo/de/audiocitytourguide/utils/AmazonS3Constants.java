@@ -15,7 +15,7 @@
 
 package solutiontogo.de.audiocitytourguide.utils;
 
-public class Constants {
+public class AmazonS3Constants {
 
     /*
      * You should replace these values with your own. See the README for details

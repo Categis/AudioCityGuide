@@ -11,44 +11,91 @@
         android:layout_weight="2"
         android:gravity="center"
         android:orientation="horizontal"
-        android:weightSum="4">
+        android:weightSum="3">
 
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:weightSum="2">
 
-        <Button
-            android:id="@+id/start_recording"
+            <solutiontogo.de.audiocitytourguide.VisualizerView
+                android:id="@+id/visualizer"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_margin="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/start_recording"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:drawableTint="@android:color/white"
+                    android:drawableLeft="@android:drawable/ic_btn_speak_now"
+                    android:text="Record"
+                    android:textSize="10dp" />
+
+                <Button
+                    android:id="@+id/stop_recording"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:drawableLeft="@android:drawable/ic_media_pause"
+                    android:text="Stop Record"
+                    android:textSize="10dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dip"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
             android:layout_weight="1"
-            android:drawableLeft="@android:drawable/ic_btn_speak_now"
-            android:text="Record"
-            android:textSize="10dp" />
+            android:weightSum="2">
 
-        <Button
-            android:id="@+id/stop_recording"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@android:drawable/ic_media_pause"
-            android:text="Stop"
-            android:textSize="10dp" />
+            <Button
+                android:id="@+id/play_recording"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@android:drawable/ic_media_play"
+                android:text="Play Recording"
+                android:textSize="10dp" />
 
-        <Button
-            android:id="@+id/play_recording"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@android:drawable/ic_media_play"
-            android:text="Play"
-            android:textSize="10dp" />
+            <Button
+                android:id="@+id/stop_playing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@android:drawable/ic_media_pause"
+                android:text="Stop Play"
+                android:textSize="10dp" />
 
-        <Button
-            android:id="@+id/delete_recording"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@android:drawable/ic_delete"
-            android:text="Delete"
-            android:textSize="10dp" />
+            <Button
+                android:id="@+id/delete_recording"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTint="@android:color/white"
+                android:drawableLeft="@android:drawable/ic_delete"
+                android:text="Delete"
+                android:textSize="10dp" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -72,6 +119,7 @@
             android:id="@+id/btUploadAudio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableTint="@android:color/white"
             android:drawableLeft="@android:drawable/ic_menu_upload"
             android:text="Upload Audio" />
 
