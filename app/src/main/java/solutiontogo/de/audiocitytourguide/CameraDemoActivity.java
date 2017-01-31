@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,6 +69,7 @@ public class CameraDemoActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK) {
+            Toast.makeText(getApplicationContext(), "Camera Pic Saved", Toast.LENGTH_SHORT).show();
             Log.d("CameraDemo", "Pic saved");
         }
     }

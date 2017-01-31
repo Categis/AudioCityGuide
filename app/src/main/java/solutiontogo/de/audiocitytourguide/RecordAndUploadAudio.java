@@ -176,7 +176,7 @@ public class RecordAndUploadAudio extends ListActivity {
                 } else {
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                 }
-                intent.setType("audio");
+                intent.setType("audio/*");
                 startActivityForResult(intent, 0);
 
 /*                // Create intent to Open Image applications like Gallery, Google Photos
@@ -319,6 +319,7 @@ public class RecordAndUploadAudio extends ListActivity {
         }
 
         Toast.makeText(getApplicationContext(), "Stop recording...", Toast.LENGTH_SHORT).show();
+        beginUpload(outputFile);
     }
 
     public void play(View view) {
