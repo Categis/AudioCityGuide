@@ -81,6 +81,7 @@ public class RecordAndUploadAudio extends ListActivity {
     private MediaPlayer myPlayer;
     private AudioRecordingThread recordingThread;
     VisualizerView visualizerView;
+    private static final int FILE_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,13 +91,14 @@ public class RecordAndUploadAudio extends ListActivity {
         visualizerView = (VisualizerView) findViewById(R.id.visualizer);
 
         // recorded file storage path
-        outputFile = getCacheDir() + "/audioRecording.mp3";
+        outputFile = "/audioRecording" + "_" + System.currentTimeMillis() + ".mp3";
 
         String sdCardState = Environment.getExternalStorageState();
         if(Environment.MEDIA_MOUNTED.equals(sdCardState) &&
                 !Environment.MEDIA_MOUNTED_READ_ONLY.equals(sdCardState)) {
-            outputFile = Environment.getExternalStorageDirectory().
-                    getAbsolutePath() + "/audioRecording.mp3";
+            outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + outputFile;
+        } else {
+            outputFile = getFilesDir() + outputFile;
         }
 
         startBtn = (Button) findViewById(R.id.start_recording);
@@ -165,9 +167,9 @@ public class RecordAndUploadAudio extends ListActivity {
         initUI();
 
         btUploadAudio = (Button) findViewById(R.id.btUploadAudio);
-        btUploadAudio.setOnTouchListener(new View.OnTouchListener() {
+        btUploadAudio.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
                 Intent intent = new Intent();
                 if (Build.VERSION.SDK_INT >= 19) {
                     intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
@@ -177,18 +179,9 @@ public class RecordAndUploadAudio extends ListActivity {
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                 }
                 intent.setType("audio/*");
-                startActivityForResult(intent, 0);
-
-/*                // Create intent to Open Image applications like Gallery, Google Photos
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                // Start the Intent
-                startActivityForResult(galleryIntent, 1);*/
-
-                return false;
+                startActivityForResult(intent, FILE_REQUEST_CODE);
             }
         });
-
     }
 
     @Override
@@ -218,6 +211,9 @@ public class RecordAndUploadAudio extends ListActivity {
         transferRecordMaps.clear();
         // Use TransferUtility to get all upload transfers.
         observers = transferUtility.getTransfersWithType(TransferType.UPLOAD);
+        if(observers.size() > 3){
+            observers = observers.subList(observers.size() - 3, observers.size());
+        }
         TransferListener listener = new UploadListener();
         for (TransferObserver observer : observers) {
 
@@ -293,7 +289,7 @@ public class RecordAndUploadAudio extends ListActivity {
 
         recordingThread = new AudioRecordingThread(outputFile, new AudioRecordingHandler() {
             @Override
-            public void updateVisualizerView(final float amplitude) {
+            public void updateVisualizerView(final int amplitude) {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         visualizerView.updateVisualizer(amplitude);
@@ -319,7 +315,14 @@ public class RecordAndUploadAudio extends ListActivity {
         }
 
         Toast.makeText(getApplicationContext(), "Stop recording...", Toast.LENGTH_SHORT).show();
-        beginUpload(outputFile);
+
+        try {
+            Uri uri = Uri.fromFile(new File(outputFile));
+            String path = getPath(uri);
+            beginUpload(path);
+        } catch (URISyntaxException e) {
+            Log.e(TAG, "Unable to upload file from the given uri", e);
+        }
     }
 
     public void play(View view) {
@@ -383,16 +386,18 @@ public class RecordAndUploadAudio extends ListActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            Uri uri = data.getData();
-            try {
-                String path = getPath(uri);
-                beginUpload(path);
-            } catch (URISyntaxException e) {
-                Toast.makeText(this,
-                        "Unable to get the file from the given URI.  See error log for details",
-                        Toast.LENGTH_LONG).show();
-                Log.e(TAG, "Unable to upload file from the given uri", e);
+        if(requestCode == FILE_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri uri = data.getData();
+                try {
+                    String path = getPath(uri);
+                    beginUpload(path);
+                } catch (URISyntaxException e) {
+                    Toast.makeText(this,
+                            "Unable to get the file from the given URI.  See error log for details",
+                            Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "Unable to upload file from the given uri", e);
+                }
             }
         }
     }

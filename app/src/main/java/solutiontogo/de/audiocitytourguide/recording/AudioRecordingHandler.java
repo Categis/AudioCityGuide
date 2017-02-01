@@ -5,5 +5,5 @@ package solutiontogo.de.audiocitytourguide.recording;
  */
 
 public interface AudioRecordingHandler {
-    void updateVisualizerView(float amplitude);
+    void updateVisualizerView(int amplitude);
 }

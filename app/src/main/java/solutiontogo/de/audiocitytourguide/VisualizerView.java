@@ -4,9 +4,6 @@ package solutiontogo.de.audiocitytourguide;
  * Created by maheshkandhari on 1/25/2017.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,63 +12,59 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class VisualizerView extends View {
-    private static final int LINE_WIDTH = 1; // width of visualizer lines
-    private static final int LINE_SCALE = 75; // scales visualizer lines
-    private List<Float> amplitudes; // amplitudes for line lengths
-    private int width; // width of this View
-    private int height; // height of this View
-    private Paint linePaint; // specifies line drawing characteristics
+    private static final int MAX_AMPLITUDE = 32767;
 
-    // constructor
+    private float[] amplitudes;
+    private float[] vectors;
+    private int insertIdx = 0;
+    private Paint pointPaint;
+    private Paint linePaint;
+    private int width;
+    private int height;
+
     public VisualizerView(Context context, AttributeSet attrs) {
-        super(context, attrs); // call superclass constructor
-        linePaint = new Paint(); // create Paint for lines
-        linePaint.setColor(Color.GREEN); // set color to green
-        linePaint.setStrokeWidth(LINE_WIDTH); // set stroke width
+        super(context, attrs);
+        linePaint = new Paint();
+        linePaint.setColor(Color.GREEN);
+        linePaint.setStrokeWidth(1);
+        pointPaint = new Paint();
+        pointPaint.setColor(Color.BLUE);
+        pointPaint.setStrokeWidth(1);
     }
 
-    // called when the dimensions of the View change
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        width = w; // new width of this View
-        height = h; // new height of this View
-        amplitudes = new ArrayList<Float>(width / LINE_WIDTH);
+    protected void onSizeChanged(int width, int h, int oldw, int oldh) {
+        this.width = width;
+        height = h;
+        amplitudes = new float[this.width * 2]; // xy for each point across the width
+        vectors = new float[this.width * 4]; // xxyy for each line across the width
     }
 
-    // clear all amplitudes to prepare for a new visualization
-    public void clear() {
-        amplitudes.clear();
+    /**
+     * modifies draw arrays. cycles back to zero when amplitude samples reach max screen size
+     */
+    public void addAmplitude(int amplitude) {
+        float scaledHeight = ((float) amplitude / MAX_AMPLITUDE) * (height - 1);
+        int ampIdx = insertIdx * 2;
+        amplitudes[ampIdx++] = insertIdx;   // x
+        amplitudes[ampIdx] = scaledHeight;  // y
+        int vectorIdx = insertIdx * 4;
+        vectors[vectorIdx++] = insertIdx;   // x0
+        vectors[vectorIdx++] = 0;           // y0
+        vectors[vectorIdx++] = insertIdx;   // x1
+        vectors[vectorIdx] = scaledHeight;  // y1
+        // insert index must be shorter than screen width
+        insertIdx = ++insertIdx >= width ? 0 : insertIdx;
     }
 
-    // add the given amplitude to the amplitudes ArrayList
-    public void addAmplitude(float amplitude) {
-        amplitudes.add(amplitude); // add newest to the amplitudes ArrayList
-        // if the power lines completely fill the VisualizerView
-        if (amplitudes.size() * LINE_WIDTH >= width) {
-            amplitudes.remove(0); // remove oldest power value
-        }
-    }
-
-    // draw the visualizer with scaled lines representing the amplitudes
     @Override
     public void onDraw(Canvas canvas) {
-        int middle = height / 2; // get the middle of the View
-        float curX = 0; // start curX at zero
-
-        // for each item in the amplitudes ArrayList
-        for (float power : amplitudes) {
-            float scaledHeight = power / LINE_SCALE; // scale the power
-            curX += LINE_WIDTH; // increase X by LINE_WIDTH
-
-            // draw a line representing this item in the amplitudes ArrayList
-            canvas.drawLine(curX, middle + scaledHeight / 2, curX, middle
-                    - scaledHeight / 2, linePaint);
-        }
+        canvas.drawLines(vectors, linePaint);
+        canvas.drawPoints(amplitudes, pointPaint);
     }
 
-    public void updateVisualizer(float amplitude) {
-        addAmplitude(amplitude);
+    public void updateVisualizer(int amplitude) {
         invalidate();
+        addAmplitude(amplitude);
     }
-
 }
