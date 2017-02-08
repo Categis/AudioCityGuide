@@ -14,7 +14,6 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -98,7 +97,7 @@ public class RecordAndUploadAudio extends ListActivity {
                 !Environment.MEDIA_MOUNTED_READ_ONLY.equals(sdCardState)) {
             outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + outputFile;
         } else {
-            outputFile = getFilesDir() + outputFile;
+            outputFile = getFilesDir().getAbsolutePath() + outputFile;
         }
 
         startBtn = (Button) findViewById(R.id.start_recording);

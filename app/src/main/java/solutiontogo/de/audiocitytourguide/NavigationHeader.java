@@ -273,7 +273,7 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
                 break;
 
             case R.id.nav_explore:
-                intent = new Intent(this, MainActivity.class);
+                intent = new Intent(this, ExploreActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;

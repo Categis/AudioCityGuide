@@ -56,7 +56,7 @@ public class VisualizerView extends View {
     public void onDraw(Canvas canvas) {
 
         Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.BLACK);
         paint.setStrokeWidth(1.5f);
         paint.setStyle(Paint.Style.STROKE);
 //        canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
