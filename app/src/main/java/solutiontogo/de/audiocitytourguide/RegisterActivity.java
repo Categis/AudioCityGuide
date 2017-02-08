@@ -4,7 +4,6 @@ package solutiontogo.de.audiocitytourguide;
  * Created by shivaramak on 02/01/2017.
  */
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -116,7 +115,7 @@ public class RegisterActivity extends NavigationHeader {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post("http://10.0.2.2:8080/stg_actg_ws/userRegister",params ,new AsyncHttpResponseHandler() {
+        client.post("http://ec2-35-162-40-174.us-west-2.compute.amazonaws.com:8080/stg_actg_ws/userRegister",params ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
@@ -124,7 +123,7 @@ public class RegisterActivity extends NavigationHeader {
                     String propValue = propertyReader.properties.getProperty(response);
                     JSONObject jsonObject = new JSONObject(propValue);
                     Toast.makeText(getApplicationContext(), jsonObject.getString("register"), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, ExploreActivity.class);
                     startActivity(intent);
                 } catch (JSONException e) {
                     e.printStackTrace();

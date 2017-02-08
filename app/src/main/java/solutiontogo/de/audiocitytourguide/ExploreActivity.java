@@ -3,6 +3,7 @@ package solutiontogo.de.audiocitytourguide;
 import android.app.Dialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
@@ -17,9 +18,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainActivity extends NavigationHeader {
+public class ExploreActivity extends NavigationHeader {
 
-    private static String TAG = MainActivity.class.getSimpleName();
+    private static String TAG = ExploreActivity.class.getSimpleName();
 
     public static String LOCATION_AUDIO_URL = "location_audio_url";
     public static String LOCATION_IMAGE_URL = "location_image_url";
@@ -59,13 +60,13 @@ public class MainActivity extends NavigationHeader {
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        rvAdapter = new HLVAdapter(MainActivity.this, locationAudioFiles, locationAudioThumbs);
+        rvAdapter = new HLVAdapter(ExploreActivity.this, locationAudioFiles, locationAudioThumbs);
         mRecyclerView.setAdapter(rvAdapter);
 
         imageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                imageDescriptionDialog = new Dialog(MainActivity.this, R.style.PopupTheme);
+                imageDescriptionDialog = new Dialog(ExploreActivity.this, R.style.PopupTheme);
                 imageDescriptionDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
                 imageDescriptionDialog.setContentView(getLayoutInflater().inflate(R.layout.full_location_details, null));
 
@@ -94,6 +95,16 @@ public class MainActivity extends NavigationHeader {
     public void closeDialog(View view) {
         if (view.getId() == R.id.ib_close) {
             imageDescriptionDialog.hide();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (null != drawerLayout && drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+//            super.onBackPressed();
+            this.moveTaskToBack(true);
         }
     }
 
