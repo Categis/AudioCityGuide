@@ -41,7 +41,7 @@ public class ExploreActivity extends NavigationHeader {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.content_main, linearLayout);
 
-        imageView = (ImageView) findViewById(R.id.ivLocationImage);
+        ivLocation = (ImageView) findViewById(R.id.ivLocationImage);
         textView =  (TextView) findViewById(R.id.tvLocationDescription);
 
         textView.setText("      The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.");
@@ -63,7 +63,7 @@ public class ExploreActivity extends NavigationHeader {
         rvAdapter = new HLVAdapter(ExploreActivity.this, locationAudioFiles, locationAudioThumbs);
         mRecyclerView.setAdapter(rvAdapter);
 
-        imageView.setOnTouchListener(new View.OnTouchListener() {
+        ivLocation.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 imageDescriptionDialog = new Dialog(ExploreActivity.this, R.style.PopupTheme);
