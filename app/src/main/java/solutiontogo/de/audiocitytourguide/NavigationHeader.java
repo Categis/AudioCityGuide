@@ -56,7 +56,7 @@ import java.util.ArrayList;
 import solutiontogo.de.audiocitytourguide.utils.PropertyReader;
 
 public class NavigationHeader extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener,
-        OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
+        OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     private static String TAG = NavigationHeader.class.getSimpleName();
 
@@ -78,7 +78,7 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
     private static final int GOOGLE_API_CLIENT_ID = 0;
     private GoogleApiClient mGoogleApiClient;
 
-    public ImageView imageView;
+    public ImageView ivLocation;
     public TextView textView;
     public static String description = null;
     public static Bitmap bitmap;
@@ -113,6 +113,7 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
             };
         }
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -274,11 +275,13 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
             case R.id.nav_explore:
                 intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
 
             case R.id.nav_tag:
                 intent = new Intent(this, TagLocationActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
 
             case R.id.nav_bookmarks:
@@ -334,10 +337,10 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
                         if (photoMetadataBuffer.getCount() > 0) {
                             // Display the first bitmap in an ImageView in the size of the view
                             photoMetadataBuffer.get(0)
-                                    .getScaledPhoto(mGoogleApiClient, imageView.getWidth(), imageView.getHeight())
+                                    .getScaledPhoto(mGoogleApiClient, ivLocation.getWidth(), ivLocation.getHeight())
                                     .setResultCallback(mDisplayPhotoResultCallback);
                         } else {
-                            imageView.setImageResource(R.drawable.image1);
+                            ivLocation.setImageResource(R.drawable.image1);
                         }
                         photoMetadataBuffer.release();
                     }
@@ -352,11 +355,9 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
                 return;
             }
             bitmap = placePhotoResult.getBitmap();
-            imageView.setImageBitmap(bitmap);
+            ivLocation.setImageBitmap(bitmap);
         }
     };
-
-
 
 
     @Override

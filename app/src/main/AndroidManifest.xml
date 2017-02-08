@@ -31,7 +31,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="solutiontogo.de.audiocitytourguide.NavigationHeader"
+            android:name="solutiontogo.de.audiocitytourguide.splash.SplashScreen"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateUnchanged|adjustPan">
@@ -40,6 +40,39 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="solutiontogo.de.audiocitytourguide.HomeAcitvity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateUnchanged|adjustPan">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name="solutiontogo.de.audiocitytourguide.NavigationHeader"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateUnchanged|adjustPan">
+            <intent-filter>
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!--<activity
+            android:name="solutiontogo.de.audiocitytourguide.AudioPlayFromAWS"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateUnchanged|adjustPan">
+            <intent-filter>
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>-->
 
         <activity
             android:name="solutiontogo.de.audiocitytourguide.ExploreActivity"

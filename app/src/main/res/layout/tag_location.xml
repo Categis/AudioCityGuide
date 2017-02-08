@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_weight="25"
+            android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -95,7 +96,7 @@
                     android:layout_height="0dip"
                     android:layout_weight="40"
                     android:maxLines="2"
-                    android:text="Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text"
+                    android:text="Title"
                     android:textColor="#000000" />
 
                 <TextView
@@ -103,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dip"
                     android:layout_weight="60"
-                    android:text="sdfsdf Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text  Sample Text"
+                    android:text="Description"
                     android:textColor="#000000" />
 
             </LinearLayout>
