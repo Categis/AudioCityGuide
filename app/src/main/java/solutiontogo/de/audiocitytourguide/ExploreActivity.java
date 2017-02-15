@@ -1,7 +1,9 @@
 package solutiontogo.de.audiocitytourguide;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,10 +15,15 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.google.android.gms.maps.SupportMapFragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
+
+import solutiontogo.de.audiocitytourguide.utils.AmazonS3Constants;
+import solutiontogo.de.audiocitytourguide.utils.AmazonS3Utility;
 
 public class ExploreActivity extends NavigationHeader {
 
@@ -36,6 +43,9 @@ public class ExploreActivity extends NavigationHeader {
 
     Dialog imageDescriptionDialog = null;
 
+    // The S3 client used for getting the list of objects in the bucket
+    private AmazonS3Client s3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +59,7 @@ public class ExploreActivity extends NavigationHeader {
         textView.scrollTo(0, 0);
         textView.setMovementMethod(new ScrollingMovementMethod());
 
-        locationAudioFiles = new ArrayList<>(Arrays.asList("Hyderabad", "Secuderabad", "Bangalore", "Tirupati", "Delhi"));
-        locationAudioThumbs = new ArrayList<>(Arrays.asList(R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1, R.drawable.image1));
+        initData();
 
         // Calling the RecyclerView
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -61,6 +70,7 @@ public class ExploreActivity extends NavigationHeader {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         rvAdapter = new HLVAdapter(ExploreActivity.this, locationAudioFiles, locationAudioThumbs);
+
         mRecyclerView.setAdapter(rvAdapter);
 
         ivLocation.setOnTouchListener(new View.OnTouchListener() {
@@ -87,6 +97,12 @@ public class ExploreActivity extends NavigationHeader {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new GetFileListTask().execute();
+    }
+
     public Typeface getFontType(){
         Typeface droidSans = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
         return droidSans;
@@ -105,6 +121,49 @@ public class ExploreActivity extends NavigationHeader {
         } else {
 //            super.onBackPressed();
             this.moveTaskToBack(true);
+        }
+    }
+
+    private void initData() {
+        // Gets the default S3 client.
+        s3 = AmazonS3Utility.getS3Client(ExploreActivity.this);
+        locationAudioFiles = new ArrayList<String>();
+        locationAudioThumbs = new ArrayList<Integer>();
+    }
+
+    /**
+     * This async task queries S3 for all files in the given bucket so that they
+     * can be displayed on the screen
+     */
+    private class GetFileListTask extends AsyncTask<Void, Void, Void> {
+        // The list of objects we find in the S3 bucket
+        private List<S3ObjectSummary> s3ObjList;
+        // A dialog to let the user know we are retrieving the files
+        private ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            dialog = ProgressDialog.show(mRecyclerView.getContext(),
+                    getString(R.string.refreshing),
+                    getString(R.string.please_wait));
+        }
+
+        @Override
+        protected Void doInBackground(Void... inputs) {
+            // Queries files in the bucket from S3.
+            s3ObjList = s3.listObjects(AmazonS3Constants.BUCKET_NAME).getObjectSummaries();
+            locationAudioFiles.clear();
+            for (S3ObjectSummary summary : s3ObjList) {
+                locationAudioFiles.add(summary.getKey());
+                locationAudioThumbs.add(R.drawable.image1);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            dialog.dismiss();
+            rvAdapter.notifyDataSetChanged();
         }
     }
 
