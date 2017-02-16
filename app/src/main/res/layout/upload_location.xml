@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Add Location Picture"
+            android:ems="10"
+            android:id="@+id/editText2" />
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="121dp"
+    android:orientation="horizontal">
+    <ImageButton
+        android:layout_width="94dp"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/ic_menu_camera"
+        android:id="@+id/ib_location_image1"
+        android:layout_weight="0.12" />
+  <ImageButton
+    android:layout_width="94dp"
+    android:layout_height="match_parent"
+    app:srcCompat="@drawable/ic_menu_camera"
+    android:id="@+id/ib_location_image2"
+    android:layout_weight="0.12" />
+    <ImageButton
+        android:layout_width="94dp"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/ic_menu_camera"
+        android:id="@+id/ib_location_image3"
+        android:layout_weight="0.12" />
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="vertical"
+        android:layout_weight="0.67">
+        <EditText
+            android:layout_width="match_parent"
+            android:text="Title"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:text="Description"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:orientation="vertical"
+        android:layout_weight="0.33">
+
+        <solutiontogo.de.audiocitytourguide.VisualizerView
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/seekBar"
+            android:layout_weight="0.00" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Audio File"
+            android:ems="10"
+            android:id="@+id/et_fileName" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_btn_speak_now"
+            android:id="@+id/ib_record"
+            android:layout_weight="0.25" />
+
+        <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+        app:srcCompat="@drawable/cast_ic_mini_controller_stop_large"
+        android:id="@+id/ib_stop" />
+ <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+     android:layout_weight="0.25"
+            app:srcCompat="@drawable/ic_play_light"
+            android:id="@+id/ib_play" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            app:srcCompat="@android:drawable/ic_menu_delete"
+            android:id="@+id/ib_delete" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="1">
+        <Button
+            android:text="Upload Location Details"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dip" />
+        </LinearLayout>
+</LinearLayout>
