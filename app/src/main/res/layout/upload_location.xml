@@ -5,7 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1">
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,23 +33,35 @@
             android:layout_width="94dp"
             android:layout_height="match_parent"
             android:layout_weight="0.12"
-            app:srcCompat="@drawable/ic_menu_camera" />
+            app:srcCompat="@drawable/ic_menu_camera"
+            android:visibility="visible"
+            android:scaleType="fitXY"
+            style="@style/Widget.AppCompat.ImageButton" />
 
         <ImageButton
             android:id="@+id/ib_location_image2"
             android:layout_width="94dp"
             android:layout_height="match_parent"
             android:layout_weight="0.12"
-            app:srcCompat="@drawable/ic_menu_camera" />
+            app:srcCompat="@drawable/ic_menu_camera"
+            android:visibility="visible"
+            android:scaleType="fitXY"
+            style="@style/Widget.AppCompat.ImageButton" />
 
         <ImageButton
             android:id="@+id/ib_location_image3"
             android:layout_width="94dp"
             android:layout_height="match_parent"
             android:layout_weight="0.12"
-            app:srcCompat="@drawable/ic_menu_camera" />
+            app:srcCompat="@drawable/ic_menu_camera"
+            android:visibility="visible"
+            android:scaleType="fitXY"
+            style="@style/Widget.AppCompat.ImageButton" />
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="55dp"
@@ -56,12 +71,13 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title" />
+            android:hint="Title" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Description" />
+            android:gravity="top|left"
+            android:hint="Description" />
     </LinearLayout>
 
     <LinearLayout
@@ -80,10 +96,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.00" />
 
-        <EditText
+        <TextView
             android:id="@+id/et_fileName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="left"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="Audio File" />
@@ -102,20 +119,23 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            app:srcCompat="@android:drawable/ic_btn_speak_now" />
+            app:srcCompat="@android:drawable/ic_btn_speak_now"
+            android:visibility="visible" />
 
         <ImageButton
             android:id="@+id/ib_stop"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            app:srcCompat="@drawable/quantum_ic_stop_grey600_48" />
+            app:srcCompat="@drawable/quantum_ic_stop_grey600_48"
+            android:visibility="visible" />
 
         <ImageButton
             android:id="@+id/ib_play"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
+            android:visibility="visible"
             app:srcCompat="@drawable/ic_play_light" />
 
         <ImageButton
@@ -123,9 +143,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
+            app:srcCompat="@android:drawable/ic_menu_delete"
+            android:visibility="visible" />
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
