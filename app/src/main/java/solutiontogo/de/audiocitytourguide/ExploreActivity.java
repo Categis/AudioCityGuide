@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -40,6 +41,7 @@ public class ExploreActivity extends NavigationHeader {
     RecyclerView.Adapter rvAdapter;
     ArrayList<String> locationAudioFiles;
     ArrayList<Integer> locationAudioThumbs;
+    SeekBar seekBar;
 
     Dialog imageDescriptionDialog = null;
 
@@ -69,7 +71,8 @@ public class ExploreActivity extends NavigationHeader {
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        rvAdapter = new HLVAdapter(ExploreActivity.this, locationAudioFiles, locationAudioThumbs);
+        seekBar = (SeekBar) findViewById(R.id.seek_bar);
+        rvAdapter = new HLVAdapter(ExploreActivity.this, locationAudioFiles, locationAudioThumbs, seekBar);
 
         mRecyclerView.setAdapter(rvAdapter);
 
@@ -154,8 +157,10 @@ public class ExploreActivity extends NavigationHeader {
             s3ObjList = s3.listObjects(AmazonS3Constants.BUCKET_NAME).getObjectSummaries();
             locationAudioFiles.clear();
             for (S3ObjectSummary summary : s3ObjList) {
-                locationAudioFiles.add(summary.getKey());
-                locationAudioThumbs.add(R.drawable.image1);
+                if(summary.getKey().endsWith(".mp3")) {
+                    locationAudioFiles.add(summary.getKey());
+                    locationAudioThumbs.add(R.drawable.image1);
+                }
             }
             return null;
         }

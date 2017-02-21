@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_main_ui"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -72,6 +73,13 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            android:layout_weight="50" />
+            android:layout_weight="40" />
+
+        <SeekBar
+            android:id="@+id/seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="10" />
+
     </LinearLayout>
 </LinearLayout>

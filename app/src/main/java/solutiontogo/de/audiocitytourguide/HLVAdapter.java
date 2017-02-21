@@ -1,15 +1,19 @@
 package solutiontogo.de.audiocitytourguide;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -28,17 +32,23 @@ public class HLVAdapter extends RecyclerView.Adapter<HLVAdapter.ViewHolder> {
 
     private static String TAG = ExploreActivity.class.getSimpleName();
 
+    Context context;
+    SeekBar seekBar;
     File audioFile = null;
+    MediaPlayer myPlayer = null;
+    Integer itemPosition = null;
+    ProgressDialog progressDialog;
     TransferUtility transferUtility;
     ArrayList<String> locationAudioFiles;
     ArrayList<Integer> locationAudioThumbs;
-    Context context;
+    private final Handler handler = new Handler();
 
-    public HLVAdapter(Context context, ArrayList<String> locationAudioFiles, ArrayList<Integer> locationAudioThumbs) {
+    public HLVAdapter(Context context, ArrayList<String> locationAudioFiles, ArrayList<Integer> locationAudioThumbs, SeekBar seekBar) {
         super();
         this.context = context;
         this.locationAudioFiles = locationAudioFiles;
         this.locationAudioThumbs = locationAudioThumbs;
+        this.seekBar = seekBar;
     }
 
     @Override
@@ -50,22 +60,39 @@ public class HLVAdapter extends RecyclerView.Adapter<HLVAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final ViewHolder viewHolder, int i) {
         viewHolder.tvSpecies.setText(locationAudioFiles.get(i));
         viewHolder.imgThumbnail.setImageResource(locationAudioThumbs.get(i));
 
         viewHolder.setClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
+                itemPosition = position;
+                if(myPlayer != null){
+                    myPlayer.stop();
+                    myPlayer.release();
+                    myPlayer = null;
+                }
+                displayProgressDialog(view);
                 if (isLongClick) {
-                    beginDownload(locationAudioFiles.get(position));
+                    beginDownload(locationAudioFiles.get(itemPosition));
 //                    Toast.makeText(context, "#" + position + " - " + locationAudioFiles.get(position) + " (Long click)", Toast.LENGTH_SHORT).show();
                 } else {
-                    beginDownload(locationAudioFiles.get(position));
+                    beginDownload(locationAudioFiles.get(itemPosition));
 //                    Toast.makeText(context, "#" + position + " - " + locationAudioFiles.get(position), Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    public void displayProgressDialog(View view){
+        progressDialog = new ProgressDialog(view.getContext());
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage("File downloading ...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setProgress(0);
+        progressDialog.setMax(100);
+        progressDialog.show();
     }
 
     @Override
@@ -75,8 +102,8 @@ public class HLVAdapter extends RecyclerView.Adapter<HLVAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-        public ImageView imgThumbnail;
         public TextView tvSpecies;
+        public ImageView imgThumbnail;
         private ItemClickListener clickListener;
 
         public ViewHolder(View itemView) {
@@ -128,26 +155,74 @@ public class HLVAdapter extends RecyclerView.Adapter<HLVAdapter.ViewHolder> {
 
         @Override
         public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+            int progress = (int) ((double) bytesCurrent * 100 / bytesTotal);
             Log.d(TAG, String.format("onProgressChanged: %d, total: %d, current: %d",
                     id, bytesTotal, bytesCurrent));
+            progressDialog.setProgress(progress);
         }
 
         @Override
         public void onStateChanged(int id, TransferState state) {
             Log.d(TAG, "onStateChanged: " + id + ", " + state);
-            if(state.equals(TransferState.COMPLETED)) {
+            if (state.equals(TransferState.COMPLETED)) {
                 try {
-                    if(audioFile != null) {
-                        MediaPlayer myPlayer = new MediaPlayer();
-                        myPlayer.setDataSource(audioFile.getAbsolutePath());
+                    progressDialog.hide();
+                    if (audioFile != null) {
+                        if(myPlayer == null) {
+                            myPlayer = new MediaPlayer();
+                        }
                         myPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                        myPlayer.setDataSource(audioFile.getAbsolutePath());
+
+                        myPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                            @Override
+                            public void onPrepared(MediaPlayer mp) {
+                                seekBar.setMax(myPlayer.getDuration());
+                                seekBar.setOnTouchListener(new View.OnTouchListener() {
+                                    @Override
+                                    public boolean onTouch(View v, MotionEvent event) {
+                                        seekChange(v);
+                                        return false;
+                                    }
+                                });
+                                seekBar.getProgress();
+                            }
+                        });
+
                         myPlayer.prepare();
                         myPlayer.start();
+                        seekBar.setProgress(0);
+                        startPlayProgressUpdater();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
+            }
+        }
+    }
+
+    private void seekChange(View v) {
+        if (myPlayer != null && myPlayer.isPlaying()) {
+            SeekBar sb = (SeekBar) v;
+            myPlayer.seekTo(sb.getProgress());
+        }
+    }
+
+    public void startPlayProgressUpdater() {
+        if(myPlayer!=null) {
+            seekBar.setProgress(myPlayer.getCurrentPosition()); //IllegalStateException coming here
+            if (myPlayer.isPlaying()) {
+                Runnable notification = new Runnable() {
+                    public void run() {
+                        startPlayProgressUpdater();
+                    }
+                };
+                handler.postDelayed(notification, 1000);
+            } else {
+                myPlayer.stop();
+                myPlayer.release();
+                myPlayer = null;
             }
         }
     }
