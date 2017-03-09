@@ -43,7 +43,7 @@
             android:weightSum="100">
 
             <ImageView
-                android:id="@+id/ivLocationImage"
+                android:id="@+id/ivExploreLocationImage"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"

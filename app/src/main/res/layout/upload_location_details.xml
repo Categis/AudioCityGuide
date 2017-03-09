@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llLocationUploadPage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="100">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvAddLocationPicture"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:gravity="left|center_vertical"
+            android:text="Add Location Picture" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="25"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <ImageView
+            android:id="@+id/iv_location_pic1"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:scaleType="center"
+            android:src="@android:drawable/ic_menu_camera"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/iv_location_pic2"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:scaleType="center"
+            android:src="@android:drawable/ic_menu_camera"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/iv_location_pic3"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:scaleType="center"
+            android:src="@android:drawable/ic_menu_camera"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_weight="10"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <EditText
+            android:id="@+id/etLocationTitle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:hint="Location Title" />
+
+        <TextView
+            android:id="@+id/tvAddLocation"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:layout_margin="5dp"
+            android:gravity="center_vertical"
+            android:hint="Add Location"
+            android:maxLines="1"
+            android:scrollHorizontally="true" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <solutiontogo.de.audiocitytourguide.VisualizerView
+            android:id="@+id/visualizer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.20"
+            android:visibility="visible" />
+
+        <SeekBar
+            android:id="@+id/seekBarInUploadPage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.80" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:id="@+id/tv_fileName"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="85"
+            android:ellipsize="end"
+            android:ems="10"
+            android:gravity="center_vertical|center_horizontal|right"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:text="Audio File" />
+
+        <ImageButton
+            android:id="@+id/delete_recording"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="15"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_delete"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <ImageButton
+            android:id="@+id/start_recording"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@android:drawable/ic_btn_speak_now" />
+
+        <ImageButton
+            android:id="@+id/stop_recording"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.34"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/cast_ic_stop_circle_filled_grey600" />
+
+        <ImageButton
+            android:id="@+id/playPauseRecording"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:text="Play"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/quantum_ic_play_arrow_grey600_48" />
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:layout_weight="40">
+
+        <EditText
+            android:id="@+id/etLocationDescription"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.65"
+            android:gravity="top|left"
+            android:maxLines="4"
+            android:hint="Location Description" />
+        <Button
+            android:id="@+id/btUploadLocationDetails"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.35"
+            android:text="Upload Location Details" />
+    </LinearLayout>
+</LinearLayout>
