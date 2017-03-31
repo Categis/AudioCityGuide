@@ -119,7 +119,7 @@ public class UploadLocationDetails extends NavigationHeader implements View.OnTo
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.upload_location_details);
+        getLayoutInflater().inflate(R.layout.upload_location_details, linearLayout);
         init();
 
         tvAddLocation.setOnClickListener(new View.OnClickListener() {
