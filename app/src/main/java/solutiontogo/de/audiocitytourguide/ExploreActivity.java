@@ -140,6 +140,8 @@ public class ExploreActivity extends NavigationHeader implements OnMapReadyCallb
 
         initData();
 
+        tvAppBarTitle.setVisibility(View.GONE);
+
         // below code is only working when it is pasted here. Please check why? (later)
         btClearSearchLocationText = (ImageButton) findViewById(R.id.btClearSearchLocationText);
         btClearSearchLocationText.setVisibility(View.VISIBLE);

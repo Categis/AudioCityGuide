@@ -45,6 +45,14 @@
                     android:visibility="gone"
                     android:layout_gravity="center_horizontal|center_vertical"/>
 
+                <TextView
+                    android:id="@+id/tvAppBarTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    android:gravity="center|start"
+                    android:textSize="20sp"/>
+
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>

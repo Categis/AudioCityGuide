@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import solutiontogo.de.audiocitytourguide.utils.PropertyReader;
 
@@ -33,6 +34,7 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
     public NavigationView navigationView;
     public LinearLayout linearLayout;
     public DrawerLayout drawerLayout;
+    public TextView tvAppBarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,8 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
+
+        tvAppBarTitle = (TextView) findViewById(R.id.tvAppBarTitle);
 
         if (isLaunched) {
             isLaunched = Boolean.FALSE;

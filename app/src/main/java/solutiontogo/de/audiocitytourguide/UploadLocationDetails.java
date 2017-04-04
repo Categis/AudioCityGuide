@@ -120,6 +120,9 @@ public class UploadLocationDetails extends NavigationHeader implements View.OnTo
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.upload_location_details, linearLayout);
+//        tvAppBarTitle.setVisibility(View.GONE);
+        tvAppBarTitle.setText("Add Location Details...");
+
         init();
 
         tvAddLocation.setOnClickListener(new View.OnClickListener() {
