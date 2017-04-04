@@ -103,7 +103,7 @@ public class UploadLocationDetails extends NavigationHeader implements View.OnTo
     ////////////////////////////////////////////
     private ImageView locationPic1, locationPic2, locationPic3;
     private EditText locationTitle, edLocationDescription;
-    private TextView fileName, addLocationPictureTitle;
+    private TextView fileName;
     private ImageButton startRecord, stopRecord, deleteRecordedAudio, playPauseBtn;
     private Button btnUploadLocationDetails;
     private TextView tvAddLocation;
@@ -580,7 +580,6 @@ public class UploadLocationDetails extends NavigationHeader implements View.OnTo
         seekBarInUploadPage = (SeekBar) findViewById(R.id.seekBarInUploadPage);
 
         fileName = (TextView) findViewById(R.id.tv_fileName);
-        addLocationPictureTitle = (TextView) findViewById(R.id.tvAddLocationPicture);
 
         startRecord = (ImageButton) findViewById(R.id.start_recording);
         stopRecord = (ImageButton) findViewById(R.id.stop_recording);

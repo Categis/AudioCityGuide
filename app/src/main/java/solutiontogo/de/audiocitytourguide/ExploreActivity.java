@@ -39,8 +39,6 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.PlaceLikelihood;
-import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.PlacePhotoResult;
@@ -180,7 +178,6 @@ public class ExploreActivity extends NavigationHeader implements OnMapReadyCallb
                 PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeAutocomplete.placeId.toString());
                 placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
                 placePhotosAsync(placeAutocomplete.placeId.toString());
-                placeId = placeAutocomplete.placeId.toString();
                 new GetFileListTask().execute();
 
             }
@@ -342,7 +339,7 @@ public class ExploreActivity extends NavigationHeader implements OnMapReadyCallb
         protected Void doInBackground(Void... inputs) {
             // Queries files in the bucket from S3.
             String filename = null;
-            s3ObjList = s3.listObjects(AmazonS3Constants.BUCKET_NAME, placeId).getObjectSummaries();
+            s3ObjList = s3.listObjects(AmazonS3Constants.BUCKET_NAME, latlngStr).getObjectSummaries();
             locationAudioFiles.clear();
             for (S3ObjectSummary summary : s3ObjList) {
                 if (summary.getKey().endsWith(".mp3")) {
@@ -445,7 +442,7 @@ public class ExploreActivity extends NavigationHeader implements OnMapReadyCallb
             // Selecting the first object buffer.
             final Place place = places.get(0);
             LatLng latLng = place.getLatLng();
-            placeId = place.getId();
+            latlngStr = latLng.toString();
             changeMapLocation(latLng);
             if (isExploreActivity) {
                 description = place.getName() + "\n" + place.getAddress();

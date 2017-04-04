@@ -26,7 +26,7 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
 
     private static String TAG = NavigationHeader.class.getSimpleName();
 
-    public String placeId = null;
+    public String latlngStr = null;
     public static Boolean isLaunched = Boolean.TRUE;
     public Boolean isExploreActivity = Boolean.TRUE;
     public PropertyReader propertyReader;
@@ -111,8 +111,8 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
         switch (id) {
             case R.id.nav_editor_choice:
                 // Handle the camera action
-                intent = new Intent(this, CameraDemoActivity.class);
-                startActivity(intent);
+/*                intent = new Intent(this, CameraDemoActivity.class);
+                startActivity(intent);*/
                 break;
 
             case R.id.nav_explore:

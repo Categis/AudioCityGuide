@@ -4,13 +4,14 @@
     android:id="@+id/content_main_ui"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#e6cffe"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:weightSum="100">
+
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mainView"
@@ -20,8 +21,21 @@
         android:layout_weight="56"
         android:orientation="vertical">
 
-        <include layout="@layout/map_fragment" />
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardMap"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="56"
+            android:elevation="3dp"
+            card_view:cardCornerRadius="5dp">
 
+            <include layout="@layout/map_fragment" />
+
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 
     <LinearLayout
@@ -32,54 +46,93 @@
         android:orientation="vertical"
         android:weightSum="100">
 
-        <LinearLayout
-            android:id="@+id/content_main"
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            android:layout_gravity="center"
-            android:layout_margin="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
             android:layout_weight="50"
-            android:orientation="horizontal"
-            android:weightSum="100">
+            android:elevation="3dp"
+            card_view:cardCornerRadius="5dp">
 
-            <ImageView
-                android:id="@+id/ivExploreLocationImage"
-                android:layout_width="0dip"
+            <LinearLayout
+                android:id="@+id/content_main"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="40"
-                android:scaleType="fitXY"
-                android:src="@drawable/test_location" />
+                android:layout_margin="2dp"
+                android:layout_weight="50"
+                android:orientation="horizontal"
+                android:background="#f9edf3"
+                android:weightSum="100">
 
-            <TextView
-                android:id="@+id/tvLocationDescription"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="60"
-                android:maxLines="6"
-                android:text="      The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window. "
-                android:textColor="#FF1D1B1B" />
+                <ImageView
+                    android:id="@+id/ivExploreLocationImage"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="50"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/test_location" />
 
-        </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+                <TextView
+                    android:id="@+id/tvLocationDescription"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="50"
+                    android:maxLines="6"
+                    android:text="      The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window.  The description of the location displayed in the left window. The description of the location displayed in the left window. " />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardAudio"
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            android:layout_weight="40" />
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="40"
+            android:elevation="3dp"
+            card_view:cardCornerRadius="5dp">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:layout_weight="40" />
+
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardSeekbar"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="10"
+            android:elevation="3dp"
+            card_view:cardCornerRadius="5dp">
         <SeekBar
             android:id="@+id/seek_bar"
             android:layout_width="match_parent"
-            android:layout_height="0dip"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
             android:layout_weight="10" />
-
+        </android.support.v7.widget.CardView>
     </LinearLayout>
+
 </LinearLayout>

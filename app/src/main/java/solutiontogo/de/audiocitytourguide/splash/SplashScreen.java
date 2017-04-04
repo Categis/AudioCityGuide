@@ -2,13 +2,15 @@ package solutiontogo.de.audiocitytourguide.splash;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import java.util.Random;
 
 import solutiontogo.de.audiocitytourguide.HomeAcitvity;
-import solutiontogo.de.audiocitytourguide.NavigationHeader;
 import solutiontogo.de.audiocitytourguide.R;
 
 /**
@@ -24,8 +26,11 @@ public class SplashScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashscreen);
-
-        imageView = (ImageView) findViewById(R.id.imageView2);
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.cardview_dark_background));
+        }
+        imageView = (ImageView) findViewById(R.id.ivSplashscreen);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
         int[] ids = new int[]{R.drawable.stg_splash_screen, R.drawable.stg_splash_screen, R.drawable.stg_splash_screen};

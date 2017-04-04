@@ -5,7 +5,7 @@
     tools:context="solutiontogo.de.audiocitytourguide.splash.SplashScreen" >
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/ivSplashscreen"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_centerHorizontal="true" />
