@@ -28,7 +28,7 @@ public class SplashScreen extends Activity {
         setContentView(R.layout.activity_splashscreen);
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.cardview_dark_background));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryText));
         }
         imageView = (ImageView) findViewById(R.id.ivSplashscreen);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);

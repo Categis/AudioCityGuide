@@ -2,15 +2,37 @@
 <resources>
 <!--    <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>-->
-    <color name="cardview_initial_background">#71C3DE</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="cardview_initial_background">#71C3DE</color>-->
 
 
-    <color name="colorPrimary">#906bfc</color>
-    <color name="colorPrimaryDark">#a688ff</color>
-    <color name="colorAccent">#ac896cdf</color>
+<!--    <color name="colorPrimary">#f29400</color>
+    <color name="colorPrimaryDark">#d58302</color>
+    <color name="colorAccent">#d58302</color>
+    <color name="windowBackground">#FFF2D8AE</color>
+    <color name="navigationBarColor">#00000000</color>
     <color name="viewBg">#f1f5f8</color>
-    <color name="album_title">#4c4c4c</color>
+
+    <color name="album_title">#000000</color>-->
+
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorPrimaryLight">#BBDEFB</color>
+    <color name="colorAccent">#03A9F4</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="myButtonColor">#f7c069</color>
+    <color name="cardBackgroundColor">#fadeb2</color>
+    <color name="divider">#BDBDBD</color>
+
+
+
+<!--    <color name="colorPrimary">#933dfc</color>
+    <color name="colorPrimaryDark">#7302fe</color>
+    <color name="colorAccent">#7302fe</color>
+    <color name="navigationBarColor">#00000000</color>
+    <color name="windowBackground">#d1b7f7</color>-->
 </resources>
 
 

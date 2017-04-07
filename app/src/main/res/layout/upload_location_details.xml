@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e6cffe"
+    android:background="#FFF2D8AE"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -19,7 +19,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="22"
+        android:layout_weight="20"
         android:orientation="horizontal"
         android:weightSum="3">
 
@@ -46,9 +46,8 @@
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:background="@android:color/darker_gray"
-                    android:scaleType="center"
-                    android:src="@android:drawable/ic_menu_camera"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_add_a_photo_black_48dp"
                     android:visibility="visible" />
 
                 <ImageView
@@ -57,9 +56,8 @@
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:background="@android:color/darker_gray"
-                    android:scaleType="center"
-                    android:src="@android:drawable/ic_menu_camera"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_add_a_photo_black_48dp"
                     android:visibility="visible" />
 
                 <ImageView
@@ -68,9 +66,8 @@
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:background="@android:color/darker_gray"
-                    android:scaleType="center"
-                    android:src="@android:drawable/ic_menu_camera"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_add_a_photo_black_48dp"
                     android:visibility="visible" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -80,7 +77,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="40"
+        android:layout_weight="42"
         android:orientation="vertical"
         android:layout_marginTop="5dp"
         android:weightSum="40">
@@ -212,6 +209,7 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@android:color/darker_gray" />
@@ -267,7 +265,7 @@
                         android:layout_weight="0.33"
                         android:background="@android:color/transparent"
                         android:scaleType="center"
-                        android:src="@android:drawable/ic_btn_speak_now" />
+                        android:src="@drawable/ic_mic_black_36dp" />
 
                     <ImageButton
                         android:id="@+id/stop_recording"
@@ -276,7 +274,7 @@
                         android:layout_weight="0.34"
                         android:background="@android:color/transparent"
                         android:scaleType="center"
-                        android:src="@drawable/cast_ic_stop_circle_filled_grey600" />
+                        android:src="@drawable/ic_stop_black_36dp" />
 
                     <ImageButton
                         android:id="@+id/playPauseRecording"
@@ -285,7 +283,7 @@
                         android:layout_weight="0.33"
                         android:background="@android:color/transparent"
                         android:scaleType="center"
-                        android:src="@drawable/quantum_ic_play_arrow_grey600_48"
+                        android:src="@drawable/ic_play_circle_outline_black_36dp"
                         android:text="Play" />
                 </LinearLayout>
             </LinearLayout>
@@ -302,7 +300,11 @@
         <Button
             android:id="@+id/btUploadLocationDetails"
             android:layout_width="match_parent"
+            android:layout_marginTop="7dp"
             android:layout_height="match_parent"
-            android:text="Upload Location Details" />
+            android:background="@drawable/curved_button"
+            android:padding="10dp"
+            android:text="Upload Location Details"
+            android:textColor="#ffffff" />
     </LinearLayout>
 </LinearLayout>

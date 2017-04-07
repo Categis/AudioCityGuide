@@ -115,7 +115,7 @@ public class RegisterActivity extends NavigationHeader {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post("http://ec2-54-69-243-166.us-west-2.compute.amazonaws.com:8080/stg_actg_ws/userRegister",params ,new AsyncHttpResponseHandler() {
+        client.post("http://ec2-54-69-243-166.us-west-2.compute.amazonaws.com:8443/stg_actg_ws/userRegister",params ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
@@ -172,4 +172,10 @@ public class RegisterActivity extends NavigationHeader {
         etPassword.setText("");
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
 }

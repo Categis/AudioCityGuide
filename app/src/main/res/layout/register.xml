@@ -118,7 +118,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="#ff6347"
+            android:background="@drawable/curved_button"
             android:onClick="registerUser"
             android:text="@string/btnRegister"
             android:textColor="#fff" />
@@ -130,11 +130,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="#ff6347"
+            android:background="@drawable/curved_button"
             android:onClick="navigatetoLoginActivity"
             android:text="Login"
-            android:textColor="#fff"
-            android:textStyle="bold" />
+            android:textColor="#FFFFFFFF" />
     </LinearLayout>
 
 </ScrollView>

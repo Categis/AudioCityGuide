@@ -111,16 +111,16 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
     public void openActivity(int id) {
         Intent intent;
         switch (id) {
+
             case R.id.nav_editor_choice:
-                // Handle the camera action
-/*                intent = new Intent(this, CameraDemoActivity.class);
-                startActivity(intent);*/
+                // Handle the user profile
+                intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.nav_explore:
                 intent = new Intent(this, ExploreActivity.class);
                 startActivity(intent);
-
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
 
