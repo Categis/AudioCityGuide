@@ -94,7 +94,7 @@ public class UploadLocationDetails extends NavigationHeader implements View.OnTo
 
     private String imagePath = null;
     private String audioFilePath = null;
-    private String selectedPlaceId = null;
+    private String selectedPlaceLatLng = null;
     public HashMap<String, String> filesToUpload;
     private MediaPlayer myPlayer;
     private AudioRecordingThread recordingThread;
@@ -339,7 +339,7 @@ public class UploadLocationDetails extends NavigationHeader implements View.OnTo
             return;
         }
         File file = new File(filePath);
-        String key = selectedPlaceId + "/" + file.getName();
+        String key = selectedPlaceLatLng + "/" + file.getName();
         TransferObserver observer = transferUtility.upload(AmazonS3Constants.BUCKET_NAME, key, file);
 //        observer.setTransferListener(new UploadListener());
     }
@@ -372,7 +372,7 @@ public class UploadLocationDetails extends NavigationHeader implements View.OnTo
                 delete(v);
                 break;
             case R.id.btUploadLocationDetails:
-                if (selectedPlaceId != null && filesToUpload != null && !filesToUpload.isEmpty()) {
+                if (selectedPlaceLatLng != null && filesToUpload != null && !filesToUpload.isEmpty()) {
                     uploadLocationDetailsToCloud();
                 }
                 break;
@@ -715,7 +715,7 @@ public class UploadLocationDetails extends NavigationHeader implements View.OnTo
                 } else if (requestCode == PLACE_PICKER_REQUEST) {
                     Place place = PlacePicker.getPlace(data, this);
                     tvAddLocation.setText(place.getAddress());
-                    selectedPlaceId = place.getId();
+                    selectedPlaceLatLng = place.getLatLng().latitude+","+place.getLatLng().longitude;
                 }
             }
         } catch (IOException e) {

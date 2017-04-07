@@ -1,8 +1,8 @@
 package solutiontogo.de.audiocitytourguide;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.graphics.Bitmap;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
@@ -21,7 +21,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
@@ -84,11 +84,8 @@ public class ExploreActivity extends NavigationHeader implements OnMapReadyCallb
     public ImageView ivLocation;
     public TextView tvLocationDescription;
     public SupportMapFragment mapFragment;
-    Bitmap bitmap;
-    String description;
     double latitude;
     double longitude;
-    Dialog imageDescriptionDialog = null;
 
     // The S3 client used for getting the list of objects in the bucket
     private AmazonS3Client s3;
@@ -179,12 +176,15 @@ public class ExploreActivity extends NavigationHeader implements OnMapReadyCallb
                 placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
                 placePhotosAsync(placeAutocomplete.placeId.toString());
                 new GetFileListTask().execute();
-
+                if (getCurrentFocus() != null) {
+                    InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                }
             }
         });
 
 
-        this.autocompleteView.addTextChangedListener(new TextWatcher() {
+        autocompleteView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -231,18 +231,8 @@ public class ExploreActivity extends NavigationHeader implements OnMapReadyCallb
         ivLocation.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                imageDescriptionDialog = new Dialog(ExploreActivity.this, R.style.PopupTheme);
-                imageDescriptionDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-                imageDescriptionDialog.setContentView(getLayoutInflater().inflate(R.layout.full_location_details, null));
-
-                ivPopupImage = (ImageView) imageDescriptionDialog.findViewById(R.id.ivPopupImage);
-                ivPopupImage.setImageBitmap(bitmap);
-
-                tvPopupText = (TextView) imageDescriptionDialog.findViewById(R.id.tvPopupText);
-                tvPopupText.setText(description);
-
-                imageDescriptionDialog.show();
-
+                Intent locationDetailsIntent = new Intent(ExploreActivity.this, LocationDetailsActivity.class);
+                startActivity(locationDetailsIntent);
                 return false;
             }
         });
@@ -293,12 +283,6 @@ public class ExploreActivity extends NavigationHeader implements OnMapReadyCallb
     public Typeface getFontType() {
         Typeface droidSans = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
         return droidSans;
-    }
-
-    public void closeDialog(View view) {
-        if (view.getId() == R.id.ib_close) {
-            imageDescriptionDialog.hide();
-        }
     }
 
     @Override
@@ -366,31 +350,28 @@ public class ExploreActivity extends NavigationHeader implements OnMapReadyCallb
      * by using buffers and result callbacks.
      */
     public void placePhotosAsync(String placeId) {
-        if (isExploreActivity) {
 
+        Places.GeoDataApi.getPlacePhotos(mGoogleApiClient, placeId)
+                .setResultCallback(new ResultCallback<PlacePhotoMetadataResult>() {
 
-            Places.GeoDataApi.getPlacePhotos(mGoogleApiClient, placeId)
-                    .setResultCallback(new ResultCallback<PlacePhotoMetadataResult>() {
-
-                        @Override
-                        public void onResult(PlacePhotoMetadataResult photos) {
-                            if (!photos.getStatus().isSuccess()) {
-                                return;
-                            }
-
-                            PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
-                            if (photoMetadataBuffer.getCount() > 0) {
-                                // Display the first bitmap in an ImageView in the size of the view
-                                photoMetadataBuffer.get(0)
-                                        .getScaledPhoto(mGoogleApiClient, ivLocation.getWidth(), ivLocation.getHeight())
-                                        .setResultCallback(mDisplayPhotoResultCallback);
-                            } else {
-                                ivLocation.setImageResource(R.drawable.image1);
-                            }
-                            photoMetadataBuffer.release();
+                    @Override
+                    public void onResult(PlacePhotoMetadataResult photos) {
+                        if (!photos.getStatus().isSuccess()) {
+                            return;
                         }
-                    });
-        }
+
+                        PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                        if (photoMetadataBuffer.getCount() > 0) {
+                            // Display the first bitmap in an ImageView in the size of the view
+                            photoMetadataBuffer.get(0)
+                                    .getScaledPhoto(mGoogleApiClient, ivLocation.getWidth(), ivLocation.getHeight())
+                                    .setResultCallback(mDisplayPhotoResultCallback);
+                        } else {
+                            ivLocation.setImageResource(R.drawable.image1);
+                        }
+                        photoMetadataBuffer.release();
+                    }
+                });
     }
 
     private ResultCallback<PlacePhotoResult> mDisplayPhotoResultCallback
@@ -442,12 +423,10 @@ public class ExploreActivity extends NavigationHeader implements OnMapReadyCallb
             // Selecting the first object buffer.
             final Place place = places.get(0);
             LatLng latLng = place.getLatLng();
-            latlngStr = latLng.toString();
+            latlngStr = latLng.latitude + "," + latLng.longitude;
             changeMapLocation(latLng);
-            if (isExploreActivity) {
-                description = place.getName() + "\n" + place.getAddress();
-                tvLocationDescription.setText(description);
-            }
+            description = place.getName() + "\n" + place.getAddress();
+            tvLocationDescription.setText(description);
             places.release();
         }
     };
@@ -469,7 +448,7 @@ public class ExploreActivity extends NavigationHeader implements OnMapReadyCallb
 
         @SuppressWarnings("MissingPermission")
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if(location != null) {
+        if (location != null) {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
         }

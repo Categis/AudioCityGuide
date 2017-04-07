@@ -5,6 +5,7 @@ package solutiontogo.de.audiocitytourguide;
  */
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
@@ -28,13 +29,14 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
 
     public String latlngStr = null;
     public static Boolean isLaunched = Boolean.TRUE;
-    public Boolean isExploreActivity = Boolean.TRUE;
     public PropertyReader propertyReader;
     public Button btnLoginInHeader;
     public NavigationView navigationView;
     public LinearLayout linearLayout;
     public DrawerLayout drawerLayout;
     public TextView tvAppBarTitle;
+    public static Bitmap bitmap;
+    public static String description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
