@@ -1,13 +1,11 @@
 package solutiontogo.de.audiocitytourguide;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -30,7 +28,7 @@ public class HomeAcitvity extends AppCompatActivity {
         }
         ivHome = (ImageView) findViewById(R.id.ivHome);
         ivHome.setScaleType(ImageView.ScaleType.FIT_XY);
-        ivHome.setImageResource(R.drawable.wikivoice_home_screen);
+        ivHome.setImageResource(R.drawable.speaking_world_home_screen);
 
         ivHome.setOnClickListener(new View.OnClickListener() {
             @Override

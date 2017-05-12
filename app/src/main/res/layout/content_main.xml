@@ -59,7 +59,7 @@
             card_view:cardCornerRadius="5dp">
 
             <LinearLayout
-                android:id="@+id/content_main"
+                android:id="@+id/ll_content_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"

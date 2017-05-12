@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -48,21 +47,27 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import solutiontogo.de.audiocitytourguide.utils.AmazonS3Constants;
 import solutiontogo.de.audiocitytourguide.utils.AmazonS3Utility;
+import solutiontogo.de.audiocitytourguide.utils.ReverseGeocodeJSON;
 
 public class ExploreActivity extends NavigationHeader implements OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,
         GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraIdleListener {
 
     private static String TAG = ExploreActivity.class.getSimpleName();
-
-    public ImageView ivPopupImage;
-    public TextView tvPopupText;
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -158,7 +163,6 @@ public class ExploreActivity extends NavigationHeader implements OnMapReadyCallb
                 .addApi(Places.PLACE_DETECTION_API)
                 .build();
 
-        geocoder = new Geocoder(this);
         mAdapter = new GooglePlacesAdapter(getApplicationContext(), R.layout.autocomplete_list_item, null, null);
 
         autocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete);
@@ -477,25 +481,70 @@ public class ExploreActivity extends NavigationHeader implements OnMapReadyCallb
 
     @Override
     public void onCameraIdle() {
-        StringBuilder strAddress = new StringBuilder();
         try {
-            latitude = mMap.getCameraPosition().target.latitude;
-            longitude = mMap.getCameraPosition().target.longitude;
-            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            if (addresses != null && !addresses.isEmpty()) {
-                for (Address address : addresses) {
-                    for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-                        if (i != address.getMaxAddressLineIndex())
-                            strAddress.append(address.getAddressLine(i)).append(", ");
-                        else
-                            strAddress.append(address.getAddressLine(i));
-                    }
-                }
-            }
+            LatLng latLng = mMap.getCameraPosition().target;
+//            new ReverseGeocodeUtil().execute(latLng);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    private class ReverseGeocodeUtil extends AsyncTask<LatLng, Void, ReverseGeocodeJSON.Result> {
+
+        final Gson gson = new Gson();
+        private String GEOCODINGKEY = "&key=AIzaSyD91fCO_J0DgyINm9ULKaFpa3j3eSHN6qY";
+        private String REVERSE_GEOCODING_URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+
+        @Override
+        protected ReverseGeocodeJSON.Result doInBackground(LatLng... params) {
+            ReverseGeocodeJSON reverseGeocodeJSON;
+            if (params != null && params.length > 0) {
+                try {
+                    String mUrl = REVERSE_GEOCODING_URL
+                            + Double.toString(params[0].latitude) + ","
+                            + Double.toString(params[0].longitude) + GEOCODINGKEY;
+
+                    URL url = new URL(mUrl);
+                    HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                    httpsURLConnection.setReadTimeout(10000);
+                    httpsURLConnection.setConnectTimeout(15000);
+                    httpsURLConnection.setDoInput(true);
+                    httpsURLConnection.setRequestMethod("GET");
+                    httpsURLConnection.connect();
+                    int mStatus = httpsURLConnection.getResponseCode();
+                    if (mStatus == 200){
+                        reverseGeocodeJSON = gson.fromJson(readResponse(httpsURLConnection.getInputStream()).toString(), ReverseGeocodeJSON.class);
+                        if(reverseGeocodeJSON.getResults() != null && reverseGeocodeJSON.getResults().size() > 0) {
+                            return reverseGeocodeJSON.getResults().get(0);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        private StringBuilder readResponse(InputStream inputStream) throws IOException, NullPointerException {
+            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            while ((line = r.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            return stringBuilder;
+        }
+
+        @Override
+        protected void onPostExecute(ReverseGeocodeJSON.Result result) {
+            if(result != null) {
+                tvLocationDescription.setText(result.formattedAddress);
+                autocompleteView.setText(result.formattedAddress);
+                description = result.formattedAddress;
+                placePhotosAsync(result.placeId);
+            }
+        }
     }
 
 }

@@ -4,8 +4,11 @@ package solutiontogo.de.audiocitytourguide;
  * Created by maheshkandhari on 1/17/2017.
  */
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
@@ -20,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import solutiontogo.de.audiocitytourguide.utils.PropertyReader;
 
@@ -56,8 +60,12 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
         btnLoginInHeader.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(login);
+                if(isNetworkAvailable()) {
+                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(login);
+                } else {
+                    Toast.makeText(getApplicationContext(), "You are not online!!!!", Toast.LENGTH_LONG).show();
+                }
                 return false;
             }
         });
@@ -78,6 +86,11 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
 
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,53 +122,59 @@ public class NavigationHeader extends FragmentActivity implements NavigationView
     }
 
     public void openActivity(int id) {
-        Intent intent;
-        switch (id) {
 
-            case R.id.nav_editor_choice:
-                // Handle the user profile
-                intent = new Intent(this, ProfileActivity.class);
-                startActivity(intent);
-                break;
+        if(isNetworkAvailable()) {
 
-            case R.id.nav_explore:
-                intent = new Intent(this, ExploreActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                break;
+            Intent intent;
+            switch (id) {
 
-            case R.id.nav_tag:
-                intent = new Intent(this, UploadLocationDetails.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                break;
+                case R.id.nav_editor_choice:
+                    // Handle the user profile
+                    intent = new Intent(this, ProfileActivity.class);
+                    startActivity(intent);
+                    break;
 
-            case R.id.nav_bookmarks:
-                intent = new Intent(this, RecordAndUploadAudio.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                break;
+                case R.id.nav_explore:
+                    intent = new Intent(this, ExploreActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    break;
 
-            case R.id.nav_share:
-                break;
+                case R.id.nav_tag:
+                    intent = new Intent(this, UploadLocationDetails.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    break;
 
-            case R.id.nav_history:
-                break;
+                case R.id.nav_bookmarks:
+                    intent = new Intent(this, RecordAndUploadAudio.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    break;
 
-            case R.id.nav_settings:
-                break;
+                case R.id.nav_share:
+                    break;
 
-            case R.id.fb_share:
-                break;
+                case R.id.nav_history:
+                    break;
 
-            case R.id.google_share:
-                break;
+                case R.id.nav_settings:
+                    break;
 
-            case R.id.instragam_share:
-                break;
+                case R.id.fb_share:
+                    break;
 
-            default:
-                break;
+                case R.id.google_share:
+                    break;
+
+                case R.id.instragam_share:
+                    break;
+
+                default:
+                    break;
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), "You are not online!!!!", Toast.LENGTH_LONG).show();
         }
     }
 

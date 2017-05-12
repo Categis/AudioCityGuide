@@ -5,37 +5,37 @@
         <item
             android:id="@+id/nav_editor_choice"
             android:icon="@drawable/ic_editor_32"
-            android:title="EDITOR'S CHOICE" />
+            android:title="Editor's Choice" />
     </group>
     <group android:id="@+id/group2">
         <item
             android:id="@+id/nav_explore"
             android:icon="@drawable/ic_explore_32"
-            android:title="EXPLORE" />
+            android:title="Explore" />
     </group>
     <group android:id="@+id/group3">
         <item
             android:id="@+id/nav_tag"
             android:icon="@drawable/ic_tag_32"
-            android:title="TAG LOCATION BASED AUDIO" />
+            android:title="Add Location Audio" />
     </group>
     <group android:id="@+id/group4">
         <item
             android:id="@+id/nav_bookmarks"
             android:icon="@drawable/ic_bookmark_32"
-            android:title="VIEW BOOKMARKS" />
+            android:title="View Bookmarks" />
     </group>
     <group android:id="@+id/group5">
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_history_32"
-            android:title="HISTORY" />
+            android:title="History" />
     </group>
     <group android:id="@+id/group6">
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_32"
-            android:title="SETTINGS" />
+            android:title="Settings" />
     </group>
 
 

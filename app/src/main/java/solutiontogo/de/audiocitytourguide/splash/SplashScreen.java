@@ -33,7 +33,7 @@ public class SplashScreen extends Activity {
         imageView = (ImageView) findViewById(R.id.ivSplashscreen);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
-        int[] ids = new int[]{R.drawable.stg_splash_screen, R.drawable.stg_splash_screen, R.drawable.stg_splash_screen};
+        int[] ids = new int[]{R.drawable.speaking_world_splash_screen, R.drawable.speaking_world_splash_screen, R.drawable.speaking_world_splash_screen};
 
         Random randomGenerator = new Random();
 

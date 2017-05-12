@@ -153,9 +153,6 @@ public class UploadLocationDetails extends NavigationHeader implements View.OnTo
         locationPic2.setOnTouchListener(this);
         locationPic3.setOnTouchListener(this);
 
-        startRecord = (ImageButton) findViewById(R.id.start_recording);
-
-
         startRecord.setOnTouchListener(this);
         stopRecord.setOnTouchListener(this);
         playPauseBtn.setOnTouchListener(this);
@@ -172,6 +169,7 @@ public class UploadLocationDetails extends NavigationHeader implements View.OnTo
         playPauseBtn.setEnabled(false);
         //stopPlayBtn.setEnabled(false);
         deleteRecordedAudio.setEnabled(false);
+        visualizerView.setVisibility(View.VISIBLE);
 
         recordingThread = new AudioRecordingThread(audioFilePath, new AudioRecordingHandler() {
             @Override
@@ -193,6 +191,7 @@ public class UploadLocationDetails extends NavigationHeader implements View.OnTo
         stopRecord.setEnabled(false);
         playPauseBtn.setEnabled(true);
         deleteRecordedAudio.setEnabled(true);
+        visualizerView.setVisibility(View.GONE);
 
         if (recordingThread != null) {
             recordingThread.stopRecording();

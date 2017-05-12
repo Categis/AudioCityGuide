@@ -87,7 +87,7 @@ public class RecordAndUploadAudio extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.record_and_upload_audio);
 
-        visualizerView = (VisualizerView) findViewById(R.id.visualizer);
+        visualizerView = (VisualizerView) findViewById(R.id.r_u_visualizer);
 
         // recorded file storage path
         outputFile = "/audioRecording" + "_" + System.currentTimeMillis() + ".mp3";
